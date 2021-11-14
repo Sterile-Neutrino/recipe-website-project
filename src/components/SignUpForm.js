@@ -1,26 +1,34 @@
 import React, {useState} from 'react';
 //import axios from 'axios';
 import LoginForm from './LoginForm';
+import Button from "react-bootstrap/Button";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
+//import { Link } from "react-router-dom";
+//axios.defaults.withCredentials = true;
 
 class SignUpForm extends React.Component{
     constructor(props){
         super(props);
-
+        /// Setting up state
         this.state={
             username: "",
             password: "",
             email: "",
-            IsCompleted: false
+            IsCompleted: false,
+            redirect: null,
+            LoggedIn: false
 
-        }
-        //bind functions
+        };
+        /// Setting up functions - set 'this' context to this class
         this.inputUsername=this.inputUsername.bind(this);
         this.inputPassword=this.inputPassword.bind(this);
-        this.inputEmail=this.inputEmail.bind(this)
+        this.inputEmail=this.inputEmail.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
 
     }
 
-    //functions
+    //input functions
     inputUsername(event){
         this.setState({
             username: event.target.value
@@ -36,11 +44,36 @@ class SignUpForm extends React.Component{
             email: event.target.value
         });
     }
+
+
     finishSignUp(){
         this.setState({
             IsCompleted: true
         });
     }
+
+    //onSubmitBack(e) {
+        //e.preventDefault();
+       // this.setState({ redirect: "/" });
+    //  }
+
+      /*
+      CheckLoggedIn({
+        axios
+        .post("Some address http://localhost")
+        .then((res) => {
+          // if true, means logged in
+          this.setState({ loggedIn: true, redirect: "/" });
+        })
+        .catch((err) => {
+           // if err, means not logged in, so valid for logging
+          this.setState({ loggedIn: false });
+        });
+
+      })
+      */
+
+
 
     //submit the data
     onSubmit(event){
@@ -49,12 +82,33 @@ class SignUpForm extends React.Component{
             username: this.state.username,
             email: this.state.email,
             password: this.state.password
+        };
+        if(SignUpData.username===""|| SignUpData.password==="" || SignUpData.email===""){
+            alert("Cannot be empty form!");
+            return;
         }
 
-        ///-----some axios input data codes here
-        //------send data to backend
+        /*-----some axios input data codes here
+        ------axios send data to backend
+        ------need send to a specific location address
+        axios
+        .post("some address start with http://localhost", SignUpData)
+        .then((res) => {
+            // only remove if complete successfully
+            this.setState({ username: "", email: "", password: "" });
+            this.setState({ redirect: "/LoginForm" });
+        })
+        .catch((err) => {
+            // if error, notify user
+            alert(err.response.data.message);
+        }); 
+        */
     }
     render(){
+        //if directed to other pages, go
+        if(this.state.redirect){
+            return <Link to={this.state.redirect}/>
+        }
         if(!this.IsCompleted){
             return(
         <div className="SignUpBox" >
@@ -74,16 +128,11 @@ class SignUpForm extends React.Component{
 
                 <div className="form-group">
                     <label htmlFor="password">Password:</label>
-                    <input type="password" name="password" id="password" onChange={this.inputPassword} value={this.state.password} />
+                    <input type="password" placeholder="123456" name="password" id="password" onChange={this.inputPassword} value={this.state.password} />
                 </div>
 
                 <input type="submit" value="SIGN UP" onClick={()=> this.finishSignUp()}/>
-
                 
-                <p class="form__text">
-                    <a class="form__link" href="./" id="linkLogin">Already have an account? Sign in!</a>
-                </p>
-
                 
             </div>
             
@@ -94,7 +143,7 @@ class SignUpForm extends React.Component{
         }
         else{
             return(
-                <LoginForm name={this.state.username}
+                <SignUpForm name={this.state.username}
                     email={this.state.email}
                     password={this.state.password}/>
             );
