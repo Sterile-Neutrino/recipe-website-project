@@ -1,0 +1,8 @@
+.Mylist h2{
+    color: white;
+    position: fixed;
+    z-index: 3;
+    left: 570px;
+    top: 100px;
+    font-size: 2rem;
+  }
