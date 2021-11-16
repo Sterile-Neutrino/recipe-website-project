@@ -23,6 +23,12 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 const recipeList = ["Chicken Sandwitch", "Fried Rice", "Spaghetti with Italian Meatball"];
 
 const RecipeItem = ({ index, style = {} }) => (
+  <div className={"RecipeItem"} style={style}>
+    {recipeList[index % 3]}
+  </div>
+);
+
+const RecipeItem2 = ({ index, style = {} }) => (
   <div className={"ListItemEven"} style={style}>
     {recipeList[index % 3]}
   </div>
@@ -36,27 +42,9 @@ function DailyList() {
       <h1 className="Title">
         What's popular today?
       </h1>
-
-      {/* <div>
-        Item count:{" "}
-        <input
-          type="number"
-          value={itemCount}
-          onChange={({ target: { value } }) => {
-            setItemCount(value);
-            setRender(false);
-          }}
-        />
-      </div> */}
-            {/* <button onClick={() => setRender(true)}>Render</button>
-            <button onClick={() => setRender(false)}>Clear</button> */}
-
           <div className="BasicList">
             {render &&
               range(50).map(item => (
-
-                // <Recipe key={item} index={item} 
-                // title={item} style={{maxHeight: '100%', overflow: 'auto'}}/>
                 <RecipeItem key={item} index={item} 
                 style={{maxHeight: '100%', overflow: 'auto'}}/>
               ))}
@@ -67,7 +55,26 @@ function DailyList() {
 
 function Mylist() {
 
-  
+  return (
+    <div className="MyListBlock">
+      <h1 className="MyListTitle">Enter My List!</h1>
+    </div>
+  )
+
+}
+
+function UploadRecipe() {
+
+  return (
+    <div className="UploadBlock">
+      <h1 className="UploadTitle">
+        Upload
+        New
+        Recipe!
+      </h1>
+    </div>
+  )
+
 }
 
 
@@ -78,9 +85,19 @@ class Home extends React.Component {
 
     render() {
       return (
+        <div>
           <div className="DailyList">
-              <DailyList/>
+            <DailyList/>
           </div>
+
+          <div className="MyList">
+            <Mylist/>
+          </div>
+
+          <div className="UploadRecipe">
+            <UploadRecipe/>
+          </div>
+        </div>
       );
     }
 

@@ -1,14 +1,49 @@
 .DailyList{
-    color: white;
     position: fixed;
-    z-index: 3;
     left: 100px;
-    top:  300px;
-    font-size: 1rem;
-    text-decoration: none;
-    font-family: 'Inter', sans-serif; 
-    display: table-column;
+    display: flex;
 }
+
+.RecipeItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    background-color: #ffe7b4;
+}
+
+.RecipeItem:hover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    background-color: white;
+}
+
+.Title {
+    left: 100px;
+    top: 150px;
+    position: fixed;
+    color: red;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+}
+
+.List {
+    width: 50%;
+  }
+
+
+.BasicList {
+    box-shadow: 5px 10px 20px black;
+    border-radius: 15px;
+    position: fixed;
+    left: 100px;
+    top: 250px;
+    height: 500px;
+    width: 400px;
+    overflow-y: auto;
+  }
 
 .Recipe{
     color: black;
@@ -24,4 +59,77 @@
     padding: 0;
     text-align: center;
     width: 100px;
+}
+
+.MyListBlock {
+    box-shadow: 5px 10px 20px black;
+    border-radius: 15px;
+    position: fixed;
+    right: 100px;
+    top: 150px;
+    height: 300px;
+    width: 300px;
+    background-color: cyan;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+}
+
+.MyListBlock:hover {
+    box-shadow: 5px 10px 20px black;
+    border-radius: 15px;
+    position: fixed;
+    right: 100px;
+    top: 150px;
+    height: 300px;
+    width: 300px;
+    background-color: lemonchiffon;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+}
+
+.MyListTitle {
+    right: 150px;
+    top: 250px;
+    position: fixed;
+    color: orange;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 30px;
+}
+
+
+.UploadBlock {
+    box-shadow: 5px 10px 20px black;
+    border-radius: 15px;
+    position: fixed;
+    right: 500px;
+    top: 150px;
+    height: 300px;
+    width: 300px;
+    background-color: cyan;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+}
+
+.UploadBlock:hover {
+    box-shadow: 5px 10px 20px black;
+    border-radius: 15px;
+    position: fixed;
+    right: 500px;
+    top: 150px;
+    height: 300px;
+    width: 300px;
+    background-color: lemonchiffon;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+}
+
+.UploadTitle {
+    right: 505px;
+    top: 250px;
+    position: fixed;
+    color: orange;
+    font-size: 30px;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
 }
