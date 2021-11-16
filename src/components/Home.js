@@ -68,9 +68,19 @@ function UploadRecipe() {
   return (
     <div className="UploadBlock">
       <h1 className="UploadTitle">
-        Upload
-        New
-        Recipe!
+        Upload New Recipe!
+      </h1>
+    </div>
+  )
+
+}
+
+function Recommendation() {
+
+  return (
+    <div className="RecommendationBlock">
+      <h1 className="RecommendationTitle">
+        Recommendation for you!
       </h1>
     </div>
   )
@@ -96,6 +106,10 @@ class Home extends React.Component {
 
           <div className="UploadRecipe">
             <UploadRecipe/>
+          </div>
+
+          <div className="Recommendation">
+            <Recommendation/>
           </div>
         </div>
       );
