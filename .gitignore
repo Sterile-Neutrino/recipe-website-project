@@ -50,7 +50,7 @@ web_modules/
 
 # Optional npm cache directory
 .npm
-
+node_modules/.cache/.eslintcache
 # Optional eslint cache
 .eslintcache
 
@@ -116,3 +116,10 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+node_modules
+build
+npm-debug.log
+.env
+.DS_Store
+
