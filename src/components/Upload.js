@@ -4,18 +4,15 @@ import { useState } from 'react';
 import axios from "axios";
 
 function SelectionBar(props) {
-    const titleLimit = 50;
-    const descriptionLimit = 400;
-    const caloriesLimit=6;
-    const ingredientLimit= 200;
     return (props.trigger) ? (
         <div className="SelectionBar">
             <div className="SelectionBar-inner">
             <h2>New Recipe</h2>
-                <input id="input-title" className="Upload-recipe" type="text" maxLength={titleLimit} placeholder="Recipe Title"></input>
-                <input id="input-description" className="Upload-recipe" type="textarea" maxLength={descriptionLimit} placeholder="Description"></input>
-                <input id="input-calories" className="Upload-recipe" type="text" maxLength={caloriesLimit} placeholder="Calories"></input>
-                <input id="input-ingredient" className="Upload-recipe" type="text" maxLength={ingredientLimit} placeholder="Ingredient"></input>
+                <input id="input-title" className="Upload-recipe" type="text" maxLength={50} placeholder="Recipe Title"></input>
+                <input id="input-description" className="Upload-recipe" type="textarea" maxLength={400} placeholder="Description"></input>
+                <input id="input-calories" className="Upload-recipe" type="text" maxLength={6} placeholder="Calories"></input>
+                <input id="input-ingredient" className="Upload-recipe" type="textarea" maxLength={200} placeholder="Ingredient"></input>
+
                 <select id="input-category" className="Upload-category" name="Category" >
                     <option value="" hidden>Please Choose a Category</option>
                     <option value="Appetizer">Appetizer</option>
@@ -26,6 +23,7 @@ function SelectionBar(props) {
                     <option value="Snack">Snack</option>
                     <option value="Other">Other</option>
                 </select>
+
                 <input id="input-image" className="Upload-image" type="file"></input>
                 <button type="button" className="Upload-submit" onClick={() => props.handleSubmit()}>Submit</button>
             </div>
@@ -46,6 +44,7 @@ function Upload() {
         }
         user = JSON.parse(user);
         let recipeData = new FormData();
+        
         recipeData.append("author", user.username);
         recipeData.append("title", document.getElementById("input-title").value);
         recipeData.append("calories", document.getElementById("input-calories").value);
@@ -54,12 +53,12 @@ function Upload() {
         recipeData.append("category", document.getElementById("input-category").value);
         recipeData.append("image", document.getElementById("input-image").files[0]);
         
-        axios({
-            method: "post",
-            url: "http://localhost:3000/recipe",
-            data: recipeData,
-            headers: { "Content-Type": "multipart/form-data" },
-        })
+
+        const header={"Content-Type": "multipart/form-data" }
+
+        axios
+        .post("http://localhost:3000/recipe",recipeData,
+           { headers: header,})
             .then( (res) =>{
                 //handle success
                 console.log("success");
@@ -70,12 +69,8 @@ function Upload() {
             });
     }
 
-    return (
-        <div className="button-container">
-
-            
-            <SelectionBar trigger={buttonSelectionBar} setTrigger={setButtonSelectionBar} handleSubmit={handleSubmit} />
-        </div>
+    return (  
+        <SelectionBar trigger={buttonSelectionBar} setTrigger={setButtonSelectionBar} handleSubmit={handleSubmit} />
     )
 }
 

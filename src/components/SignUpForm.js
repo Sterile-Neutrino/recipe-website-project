@@ -44,26 +44,6 @@ class SignUpForm extends React.Component{
         });
     }
 
-
-      /*
-      this part might not be needed....If we have time
-      componentDidMount(){
-        axios
-        .post("http://localhost:3000/users/logged")
-        .then((res) => {
-          // if true, means logged in
-          this.setState({ LoggedIn: true, redirect: "/" });
-        })
-        .catch((err) => {
-           // if err, means not logged in, so valid for logging
-          this.setState({ LoggedIn: false });
-        });
-
-      })
-      */
-
-
-
     //submit the data
     onSubmit(event){
         event.preventDefault();
@@ -76,11 +56,6 @@ class SignUpForm extends React.Component{
             alert("Cannot be empty form!");
             return;
         }
-
-        /*-----some axios post data codes here
-        ------axios send data to backend
-        ------need send to a specific location address
-
 
         axios
         .post("http://localhost:3000/users/SignUp", SignUpData)
@@ -96,7 +71,6 @@ class SignUpForm extends React.Component{
             console.log(err);
             alert(err.response.data.message);
         }); 
-        */
         
     }
     render(){
@@ -136,12 +110,7 @@ class SignUpForm extends React.Component{
 
             )
         }
-    
-
-
-
 }
-
 
 export default SignUpForm
 
