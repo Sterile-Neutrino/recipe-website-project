@@ -9,6 +9,7 @@ import SignUp from "./components/SignUpForm";
 import LoginForm from './components/LoginForm';
 import Home from "./components/Home";
 import Mylist from "./components/Mylist.js";
+import Upload from"./components/Upload.js";
 
 axios.defaults.withCredentials = true;
 
@@ -27,7 +28,7 @@ function App() {
       
         <div className="top-bar"></div>
         <nav>
-          <Link to="/Mylist" className="logo"><h1>My Recipe App</h1></Link>
+          <Link to="/Upload" className="logo"><h1>My Recipe App</h1></Link>
           <Link to="/Home" className="Home">
             HomePage
           </Link>
@@ -44,6 +45,7 @@ function App() {
           <Route exact path="/LoginForm" exact element={<LoginForm/>}/>
           <Route exact path="/Mylist" exact element={<Mylist/>}/>
           <Route exact path="/Home" exact element={<Home/>}/>
+          <Route exact path="/Upload" exact element={<Upload/>}/>
 
 
         </Routes>

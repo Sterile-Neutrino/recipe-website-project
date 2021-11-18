@@ -42,7 +42,7 @@ class LoginForm extends React.Component{
     }
     
  /*  if we have time....
-      CheckLoggedIn({
+      componentDidMount(){
         axios
         .post("http://localhost:3000/users/logged")
         .then((res) => {
@@ -74,6 +74,8 @@ class LoginForm extends React.Component{
       .post("http://localhost:3000/users/login", LoginData)
       .then((res) => {
         // only remove if complete successfully
+        let info = res.data.data;
+        localStorage.setItem('userInfo', JSON.stringify(info))
         this.setState({ username: "", password: "" });
         this.setState({ redirect: "/Home" });
       })
