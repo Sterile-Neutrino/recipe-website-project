@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import SignUp from './SignUpForm';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
+import { Navigate } from "react-router-dom";
 
 
 class LoginForm extends React.Component{
@@ -12,7 +12,6 @@ class LoginForm extends React.Component{
         this.state={
             username: "",
             password: "",
-            IsCompleted: false,
             redirect: null,
             LoggedIn: false
 
@@ -42,17 +41,17 @@ class LoginForm extends React.Component{
         });
     }
     
- /*
+ /*  if we have time....
       CheckLoggedIn({
         axios
-        .post("Some address http://localhost")
+        .post("http://localhost:3000/users/logged")
         .then((res) => {
           // if true, means logged in
-          this.setState({ loggedIn: true, redirect: "/" });
+          this.setState({ LoggedIn: true, redirect: "/" });
         })
         .catch((err) => {
            // if err, means not logged in, so valid for logging
-          this.setState({ loggedIn: false });
+          this.setState({ LoggedIn: false });
         });
 
       })
@@ -71,8 +70,8 @@ class LoginForm extends React.Component{
             alert("Cannot be empty form!");
             return;
         }
-        /*axios
-      .post("some address", objObject)
+    /*axios
+      .post("http://localhost:3000/users/login", LoginData)
       .then((res) => {
         // only remove if complete successfully
         this.setState({ username: "", password: "" });
@@ -91,10 +90,9 @@ class LoginForm extends React.Component{
     }
     render(){
         if(this.state.redirect){
-            return <Link to={this.state.redirect}/>
+            return <Navigate to={this.state.redirect}/>
         }
-        if(!this.IsCompleted){
-            return(
+        return(
         <div className="SignInBox" >
         <form className="input_form" onSubmit={this.onSubmit}>
             <div className="form-inner">
@@ -121,14 +119,9 @@ class LoginForm extends React.Component{
 
             )
         }
-        else{
-            return(
-                <LoginForm name={this.state.username}
-                    password={this.state.password}/>
-            );
-        }
+        
     
-    }
+    
 
 
 

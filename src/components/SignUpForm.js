@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-//import axios from 'axios';
+import axios from 'axios';
 import LoginForm from './LoginForm';
 import Button from "react-bootstrap/Button";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
+import { Navigate } from "react-router-dom";
 //import { Link } from "react-router-dom";
 //axios.defaults.withCredentials = true;
 
@@ -15,7 +15,6 @@ class SignUpForm extends React.Component{
             username: "",
             password: "",
             email: "",
-            IsCompleted: false,
             redirect: null,
             LoggedIn: false
 
@@ -46,28 +45,18 @@ class SignUpForm extends React.Component{
     }
 
 
-    finishSignUp(){
-        this.setState({
-            IsCompleted: true
-        });
-    }
-
-    //onSubmitBack(e) {
-        //e.preventDefault();
-       // this.setState({ redirect: "/" });
-    //  }
-
       /*
-      CheckLoggedIn({
+      this part might not be needed....If we have time
+      componentDidMount(){
         axios
-        .post("Some address http://localhost")
+        .post("http://localhost:3000/users/logged")
         .then((res) => {
           // if true, means logged in
-          this.setState({ loggedIn: true, redirect: "/" });
+          this.setState({ LoggedIn: true, redirect: "/" });
         })
         .catch((err) => {
            // if err, means not logged in, so valid for logging
-          this.setState({ loggedIn: false });
+          this.setState({ LoggedIn: false });
         });
 
       })
@@ -88,29 +77,35 @@ class SignUpForm extends React.Component{
             return;
         }
 
-        /*-----some axios input data codes here
+        /*-----some axios post data codes here
         ------axios send data to backend
         ------need send to a specific location address
+
+
         axios
-        .post("some address start with http://localhost", SignUpData)
+        .post("http://localhost:3000/users/SignUp", SignUpData)
         .then((res) => {
+            console.log(res);
             // only remove if complete successfully
+            //if signed up, go login page
             this.setState({ username: "", email: "", password: "" });
             this.setState({ redirect: "/LoginForm" });
         })
         .catch((err) => {
             // if error, notify user
+            console.log(err);
             alert(err.response.data.message);
         }); 
         */
+        
     }
     render(){
         //if directed to other pages, go
         if(this.state.redirect){
-            return <Link to={this.state.redirect}/>
+            return <Navigate to={this.state.redirect}/>
         }
-        if(!this.IsCompleted){
-            return(
+
+        return(
         <div className="SignUpBox" >
         <form className="input_form" onSubmit={this.onSubmit}>
             <div className="form-inner">
@@ -131,7 +126,7 @@ class SignUpForm extends React.Component{
                     <input type="password" placeholder="123456" name="password" id="password" onChange={this.inputPassword} value={this.state.password} />
                 </div>
 
-                <input type="submit" value="SIGN UP" onClick={()=> this.finishSignUp()}/>
+                <input type="submit" value="SIGN UP" />
                 
                 
             </div>
@@ -141,14 +136,7 @@ class SignUpForm extends React.Component{
 
             )
         }
-        else{
-            return(
-                <SignUpForm name={this.state.username}
-                    email={this.state.email}
-                    password={this.state.password}/>
-            );
-        }
-    }
+    
 
 
 
@@ -156,3 +144,4 @@ class SignUpForm extends React.Component{
 
 
 export default SignUpForm
+
