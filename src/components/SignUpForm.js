@@ -16,7 +16,6 @@ class SignUpForm extends React.Component{
             password: "",
             email: "",
             redirect: null,
-            LoggedIn: false
 
         };
         /// Setting up functions - set 'this' context to this class
@@ -68,8 +67,7 @@ class SignUpForm extends React.Component{
         })
         .catch((err) => {
             // if error, notify user
-            console.log(err);
-            alert(err.response.data.message);
+            alert("Error");
         }); 
         
     }
