@@ -18,7 +18,7 @@ class Mylist extends React.Component{
 
         };
     }
-
+    
     render() {
         return(
         <div className="Mylist" >
@@ -48,3 +48,6 @@ class Mylist extends React.Component{
 }
 
 export default Mylist
+
+
+

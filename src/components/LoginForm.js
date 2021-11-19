@@ -13,7 +13,6 @@ class LoginForm extends React.Component{
             username: "",
             password: "",
             redirect: null,
-            LoggedIn: false
 
         };
         /// Setting up functions - set 'this' context to this class
@@ -35,29 +34,6 @@ class LoginForm extends React.Component{
         });
     }
 
-    finishLogin(){
-        this.setState({
-            IsCompleted: true
-        });
-    }
-    
- /*  if we have time....
-      CheckLoggedIn({
-        axios
-        .post("http://localhost:3000/users/logged")
-        .then((res) => {
-          // if true, means logged in
-          this.setState({ LoggedIn: true, redirect: "/" });
-        })
-        .catch((err) => {
-           // if err, means not logged in, so valid for logging
-          this.setState({ LoggedIn: false });
-        });
-
-      })
-      */
-
-
 
       //submit the data
     onSubmit(event){
@@ -70,18 +46,21 @@ class LoginForm extends React.Component{
             alert("Cannot be empty form!");
             return;
         }
-    /*axios
+    axios
       .post("http://localhost:3000/users/login", LoginData)
       .then((res) => {
         // only remove if complete successfully
+        let info = res.data.data;
+        localStorage.setItem('userInfo', JSON.stringify(info))
+
         this.setState({ username: "", password: "" });
         this.setState({ redirect: "/Home" });
       })
       .catch((err) => {
         // if error, notify user
         this.setState({ name: "", password: "" });
-        alert(err.response.data.message);
-      });*/
+        alert("Username and password do not match!");
+      });
 
 
 

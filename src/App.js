@@ -28,7 +28,7 @@ function App() {
       
         <div className="top-bar"></div>
         <nav>
-          <Link to="/Mylist" className="logo"><h1>My Recipe App</h1></Link>
+          <Link to="/Upload" className="logo"><h1>My Recipe App</h1></Link>
           <Link to="/Home" className="Home">
             HomePage
           </Link>
@@ -60,14 +60,4 @@ function App() {
 
   );
 }
-
-
-
-
-
-
-
-
-
-
 export default App;
