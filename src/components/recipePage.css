@@ -1,8 +1,64 @@
-。recipe_name{
-    right: 100px;
-    top: 150px;
+.recipe_name{
+    left: 150px;
+    top: 120px;
     position: fixed;
     color: black;
     text-decoration: none;
     font-family: 'Inter', sans-serif;
+    font-size: 50px;
+}
+.descriptionBlock{
+    position: fixed;
+    left: 150px;
+    top: 300px;
+    height: 450px;
+    width: 590px;
+    background-color: lemonchiffon;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+}
+.description_content{
+    left:170px;
+    top: 320px;
+    height: 400px;
+    width:500px;
+    position:fixed;
+    color:black;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size: large;
+    text-align: justify;
+    line-height: 25px;
+}
+.recipe_calories{
+    left:150px;
+    top:220px;
+    position:fixed;
+    color:red;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size:x-large;
+}
+.picture img{
+    display: block;
+    right: 100px;
+    top: 150px;
+    position:fixed;
+    height: 450px;
+    width: 600px
+}
+.LikeButton button{
+    right:300px;
+    top:640px;
+    position:fixed;
+    height:40px;
+    width: 200px;
+    background-color: lemonchiffon;
+    padding: 4px 0;
+    border-radius: 3px;
+    font-family: 'Roboto'; 
+	text-align: center;
+  	text-transform: uppercase;
+    color: black;
+    user-select: none;
 }

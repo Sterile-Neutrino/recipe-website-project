@@ -17,7 +17,7 @@ function RecipeDescription() {
     return (
       <div className="descriptionBlock">
         <h1 className="description_content">
-        Roast chicken is chicken prepared as food by roasting.
+        Roast chicken is chicken prepared as food by roasting whether in a home kitchen, over a fire, or with a rotisserie (rotary spit). Generally, the chicken is roasted with its own fat and juices by circulating the meat during roasting, and therefore, are usually cooked exposed to fire or heat with some type of rotary grill so that the circulation of these fats and juices is as efficient as possible. Roast chicken is a dish that appears in a wide variety of cuisines worldwide.
         </h1>
       </div>
     );
@@ -41,6 +41,18 @@ function RecipePicture() {
     );
 }
 
+function Like(){
+  return(
+    <div className="LikeButton">
+      <button onClick={likeit}>
+        Like this recipe 👍🏻
+      </button>
+    </div>
+  );
+}
+function likeit(){
+  ;
+}
 class recipePage extends React.Component {
     constructor(props) {
         super(props);
@@ -53,7 +65,6 @@ class recipePage extends React.Component {
           <div className="RecipeName">
             <RecipeName/>
           </div>
-          <h1>Hello!!!</h1>
           <div className="RecipeDescription">
             <RecipeDescription/>
           </div>
@@ -63,6 +74,9 @@ class recipePage extends React.Component {
           </div>
           <div className="RecipePicture">
             <RecipePicture/>
+          </div>
+          <div className="Like">
+            <Like/>
           </div>
         </div>
       );

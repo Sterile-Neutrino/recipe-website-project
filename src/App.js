@@ -43,7 +43,7 @@ function App() {
           </Link>
 
           <Link to="/RecipePage" className="RecipePage">
-            Recipe Page</Link>
+            Eat some chicken</Link>
 
         </nav>
        
