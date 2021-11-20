@@ -48,12 +48,27 @@
     width: 600px
 }
 .LikeButton button{
-    right:300px;
+    right:420px;
     top:640px;
     position:fixed;
     height:40px;
-    width: 200px;
-    background-color: lemonchiffon;
+    width: 240px;
+    background-color:rgb(252, 239, 239);
+    padding: 4px 0;
+    border-radius: 3px;
+    font-family: 'Roboto'; 
+	text-align: center;
+  	text-transform: uppercase;
+    color:black;
+    user-select: none;
+}
+.FavoriteButton button{
+    right:140px;
+    top:640px;
+    position:fixed;
+    height:40px;
+    width: 240px;
+    background-color: rgb(250, 238, 133);
     padding: 4px 0;
     border-radius: 3px;
     font-family: 'Roboto'; 

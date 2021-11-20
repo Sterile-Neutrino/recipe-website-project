@@ -53,6 +53,20 @@ function Like(){
 function likeit(){
   ;
 }
+
+function Favorite(){
+  return(
+    <div className="FavoriteButton">
+      <button onClick={AddtoFavorite}>
+        Add to my list ⭐
+      </button>
+    </div>
+  );
+}
+
+function AddtoFavorite(){
+  ;
+}
 class recipePage extends React.Component {
     constructor(props) {
         super(props);
@@ -77,6 +91,9 @@ class recipePage extends React.Component {
           </div>
           <div className="Like">
             <Like/>
+          </div>
+          <div className="Favorite">
+            <Favorite/>
           </div>
         </div>
       );
