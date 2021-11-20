@@ -1,14 +1,14 @@
 .recipe_name{
     left: 150px;
     top: 120px;
-    position: fixed;
+    position: absolute;
     color: black;
     text-decoration: none;
     font-family: 'Inter', sans-serif;
     font-size: 50px;
 }
 .descriptionBlock{
-    position: fixed;
+    position: absolute;
     left: 150px;
     top: 300px;
     height: 450px;
@@ -18,11 +18,11 @@
     font-family: 'Inter', sans-serif;
 }
 .description_content{
-    left:170px;
-    top: 320px;
+    left:60px;
+    top: 20px;
     height: 400px;
     width:500px;
-    position:fixed;
+    position: absolute;
     color:black;
     text-decoration: none;
     font-family: 'Inter', sans-serif;
@@ -33,7 +33,7 @@
 .recipe_calories{
     left:150px;
     top:220px;
-    position:fixed;
+    position:absolute;
     color:red;
     text-decoration: none;
     font-family: 'Inter', sans-serif;
@@ -43,14 +43,14 @@
     display: block;
     right: 100px;
     top: 150px;
-    position:fixed;
+    position:absolute;
     height: 450px;
     width: 600px
 }
 .LikeButton button{
     right:420px;
     top:640px;
-    position:fixed;
+    position:absolute;
     height:40px;
     width: 240px;
     background-color:rgb(252, 239, 239);
@@ -65,7 +65,7 @@
 .FavoriteButton button{
     right:140px;
     top:640px;
-    position:fixed;
+    position:absolute;
     height:40px;
     width: 240px;
     background-color: rgb(250, 238, 133);
