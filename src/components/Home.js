@@ -6,6 +6,7 @@ import "./Home.css";
 import range from "lodash/range";
 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Upload from './Upload';
 
 // function recipe(props) {
 //     return (
@@ -24,10 +25,14 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 const recipeList = ["Chicken Sandwitch", "Fried Rice", "Spaghetti with Italian Meatball"];
 
-const RecipeItem = ({ index, style = {} }) => (
-  <div className={"RecipeItem"} style={style}>
-    {recipeList[index % 3]}
-  </div>
+const RecipeItem = ({ index= {} }) => (
+  <Link component={Link} to="/RecipePage" className="RecipeItem"  style = {{textDecoration: 'none' }}>
+    <h1 className="RecipeTitle"> 
+      {recipeList[index % 3]}
+    </h1>
+  </Link>
+  
+
 );
 
 const RecipeItem2 = ({ index, style = {} }) => (
@@ -47,8 +52,7 @@ function DailyList() {
           <div className="BasicList">
             {render &&
               range(50).map(item => (
-                <RecipeItem key={item} index={item} 
-                style={{maxHeight: '100%', overflow: 'auto'}}/>
+                <RecipeItem key={item} index={item}/>
               ))}
           </div>
         </div>
@@ -58,9 +62,9 @@ function DailyList() {
 function Mylist() {
 
   return (
-    <div className="MyListBlock">
-      <h1 className="MyListTitle">Enter My List!</h1>
-    </div>
+    <Link component={Link} to="/MyList" className="MyListBlock">
+      Enter My List!
+    </Link>
   )
 
 }
@@ -68,11 +72,9 @@ function Mylist() {
 function UploadRecipe() {
 
   return (
-    <div className="UploadBlock">
-      <h1 className="UploadTitle">
-        Upload New Recipe!
-      </h1>
-    </div>
+        <Link component={Link} to="/Upload" className="UploadBlock">
+          Upload Recipe!
+        </Link>
   )
 
 }
@@ -80,11 +82,21 @@ function UploadRecipe() {
 function Recommendation() {
 
   return (
-    <div className="RecommendationBlock">
+    <Link component={Link} to="/RecipePage" className="RecommendationBlock">
       <h1 className="RecommendationTitle">
-        Recommendation for you!
+        Recommended to You: Roast Chicken!
       </h1>
-    </div>
+      <h2 className="RecommendationContent">
+      Roast chicken is chicken prepared as food by roasting whether in a home kitchen, over a fire, or with a rotisserie (rotary spit). Generally, the chicken is roasted with its own fat and juices...
+      </h2>
+      <div className="RecommendationThumbnail">
+        <img src="./images/sample.jpg" alt=""/>
+      </div>
+    </Link>
+
+    // <Link component={Link} to="/RecipePage" className="RecommendationThumbnail">
+    //   <img src="./images/sample.jpg" alt=""/>
+    // </Link>
   )
 
 }

@@ -1,29 +1,40 @@
 .DailyList{
-    position: fixed;
+    position: relative;
     left: 100px;
     display: flex;
 }
 
 .RecipeItem {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: absolute;
+    text-align: center;
+    line-height: 40px;
     height: 40px;
     background-color: lemonchiffon;
 }
 
 .RecipeItem:hover {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: absolute;
+    text-align: center;
+    line-height: 40px;
     height: 40px;
     background-color: white;
 }
 
+.RecipeTitle {
+    /* right: 150px;
+    top: 250px; */
+    position: relative;
+    color: orange;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 25px;
+}
+
 .Title {
-    left: 100px;
-    top: 150px;
-    position: fixed;
+    z-index: 1;
+    left: -720px;
+    top: -270px;
+    position: absolute;
     color: red;
     text-decoration: none;
     font-family: 'Inter', sans-serif;
@@ -64,96 +75,133 @@
 .MyListBlock {
     box-shadow: 5px 10px 20px black;
     border-radius: 15px;
-    position: fixed;
+    position: absolute;
     right: 100px;
     top: 150px;
     height: 300px;
     width: 300px;
     background-color: lemonchiffon;
+    color: orange;
+    font-size: 30px;
     text-decoration: none;
     font-family: 'Inter', sans-serif;
+    text-align: center;
+    line-height: 250px;
 }
 
 .MyListBlock:hover {
     box-shadow: 5px 10px 20px black;
     border-radius: 15px;
-    position: fixed;
+    position: absolute;
     right: 100px;
     top: 150px;
     height: 300px;
     width: 300px;
     background-color: white;
+    color: orange;
+    font-size: 30px;
     text-decoration: none;
     font-family: 'Inter', sans-serif;
+    text-align: center;
+    line-height: 250px;
 }
 
-.MyListTitle {
-    right: 150px;
-    top: 250px;
-    position: fixed;
-    color: orange;
-    text-decoration: none;
-    font-family: 'Inter', sans-serif;
-    font-size: 30px;
-}
 
 
 .UploadBlock {
     box-shadow: 5px 10px 20px black;
     border-radius: 15px;
-    position: fixed;
+    position: absolute;
     right: 500px;
     top: 150px;
     height: 300px;
     width: 300px;
     background-color: lemonchiffon;
+    color: orange;
+    font-size: 30px;
     text-decoration: none;
     font-family: 'Inter', sans-serif;
+    text-align: center;
+    line-height: 250px;
 }
 
 .UploadBlock:hover {
     box-shadow: 5px 10px 20px black;
     border-radius: 15px;
-    position: fixed;
+    position: absolute;
     right: 500px;
     top: 150px;
     height: 300px;
     width: 300px;
     background-color: white;
-    text-decoration: none;
-    font-family: 'Inter', sans-serif;
-}
-
-.UploadTitle {
-    right: 505px;
-    top: 250px;
-    position: fixed;
     color: orange;
     font-size: 30px;
     text-decoration: none;
     font-family: 'Inter', sans-serif;
+    text-align: center;
+    line-height: 250px;
 }
 
 
 .RecommendationBlock {
     box-shadow: 5px 10px 20px black;
     border-radius: 15px;
-    position: fixed;
+    position: absolute;
     right: 100px;
     bottom: 40px;
     height: 250px;
     width: 700px;
     background-color: lemonchiffon;
+    color: black;
+    font-size: 22px;
     text-decoration: none;
     font-family: 'Inter', sans-serif;
+    /* white-space: pre-wrap; */
 }
+
+.RecommendationTitle {    
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    width: 700px;
+    color: orange;
+    font-size: 25px;
+    font-family: 'Inter', sans-serif;
+    word-break: break-word;
+}
+
+.RecommendationContent {
+    position: absolute;
+    top: 50px;
+    left: 30px;
+    width: 400px;
+    height: 180px;
+    color: black;
+    font-size: 20px;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    word-break: break-word;
+    line-height: 1.6em;
+    overflow: hidden;
+}
+
+.RecommendationThumbnail img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    position: absolute;
+    right: 10px;
+    width: 30%;
+    height: auto;
+  }
+  
+  .RecommendationThumbnail img:hover {
+    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+  }
 
 .RecommendationTitle {
     right: 200px;
     bottom: 100px;
-    position: fixed;
-    color: orange;
-    font-size: 30px;
-    text-decoration: none;
-    font-family: 'Inter', sans-serif;
+    position: relative;
+    text-align: center;
 }
