@@ -3,7 +3,7 @@ import axios from 'axios'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./recipePage.css"
 
-function recipeName (){
+function RecipeName (){
     return (
         <div className="recipeNameBlock">
             <h1 className="recipe_name">
@@ -12,7 +12,7 @@ function recipeName (){
         </div>
     );
 }
-function recipeDescription() {
+function RecipeDescription() {
 
     return (
       <div className="descriptionBlock">
@@ -22,7 +22,7 @@ function recipeDescription() {
       </div>
     );
 }
-function recipeCalories() {
+function RecipeCalories() {
 
     return (
       <div className="caloriesBlock">
@@ -32,7 +32,7 @@ function recipeCalories() {
       </div>
     );
 }
-function recipePicture() {
+function RecipePicture() {
 
     return (
       <div className="picture">
@@ -48,20 +48,21 @@ class recipePage extends React.Component {
 
     render() {
       return (
+        
         <div>
-          <div className="recipeName">
-            <recipeName/>
+          <div className="RecipeName">
+            <RecipeName/>
+          </div>
+          <h1>Hello!!!</h1>
+          <div className="RecipeDescription">
+            <RecipeDescription/>
           </div>
 
-          <div className="recipeDescription">
-            <recipeDescription/>
+          <div className="RecipeCalories">
+            <RecipeCalories/>
           </div>
-
-          <div className="recipeCalories">
-            <recipeCalories/>
-          </div>
-          <div className="recipePicture">
-            <recipePicture/>
+          <div className="RecipePicture">
+            <RecipePicture/>
           </div>
         </div>
       );
