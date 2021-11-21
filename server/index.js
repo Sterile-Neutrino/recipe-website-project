@@ -1,10 +1,9 @@
-const { getByDisplayValue } = require('@testing-library/react');
 const express = require('express');
 const mongoose = require('mongoose');
-const { useCallback } = require('react');
+var bodyParser = require('body-parser')
 const app = express();
 const db = mongoose.connection;
-const Schema = mongoose.Schema;
+const port = 4000;
 // To use a local mongodb
 // const url = 'mongodb://127.0.0.1:27017/recipes';
 
@@ -13,9 +12,13 @@ const url = 'mongodb+srv://recipe:cs35lfall21@cluster0.2hwcf.mongodb.net\
 /recipe-app?retryWrites=true&w=majority';
 
 // Listen to port
-app.listen(3000, function() {
-    console.log('listening on 3000')
+app.listen(port, function() {
+    console.log('listening on %d', port);
   })
+
+// Set up body-parser for express
+app.use(bodyParser.urlencoded({extended: true})) 
+app.use(bodyParser.json()) 
 
 // Connect to the database
 mongoose.connect(url, { useNewUrlParser: true })
@@ -28,11 +31,11 @@ db.on('error', err => {
 
 // Schema for users
 const usersSchema = new mongoose.Schema({
-  username: String,
+  username: {type: String, unique: true},
   password: String,
   email: String,
-  uploadList: Array,
-  likeList: Array,
+  uploadList: [{type: mongoose.ObjectId, ref: 'Recipe'}],
+  likeList: [{type: mongoose.ObjectId, ref: 'Recipe'}]
 },{
   versionKey: false  // Get rid of __v when creating a document
 });
@@ -64,8 +67,24 @@ app.get('/getRecipes', async (req, res) => {
   res.json(recipes);
 });
 
+// Create a user at /SignUp
+app.post('/users/SignUp', async (req, res) => {
+  var username = req.body.username;
+  var password = req.body.password;
+  var email = req.body.email;
+  return await signUp(username, password, email)
+  .then(doc => {
+    console.log('signup succeeded');
+    res.send(true);
+  })
+  .catch(err => {
+    console.log('signup failed');
+    res.send(false);
+  });
+});
+
 // Create a user with username, password, and email, and store in database
-async function signup(u, p, e) {
+async function signUp(u, p, e) {
   const newUser = new User({
     username: u,
     password: p,
@@ -84,6 +103,7 @@ signup('bruin', 'bruin123', 'bruin@ucla.edu')
 
 // Create and upload a recipe to database
 // Image processing to be done...
+
 async function uploadRecipe(n, cat, i, cal, d) {
   const newRecipe = new Recipe({
     name: n,
@@ -114,8 +134,40 @@ uploadRecipe(
 */
 
 // Return true if the user with username u and password p exists
-function signIn(u, p, callback) {
+async function signIn(u, p) {
+  var user = User.exists({username: u, password: p}, (err, doc) => {
+      if (err) {
+          console.log(err);
+      } else if (doc !== null) {
+          console.log(u + ' signed in successfully');
+      } else {
+          console.log('username and password do not match')
+      }
+  });
+  return new Promise((resolve, reject) => {
+      if (user) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+  });
 }
+
+/*
+signIn('john', 'john123')
+.then(value => {
+    console.log(value);
+})
+.catch(err => {
+    console.log(err);
+});
+*/
+
+const myPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('foo');
+    }, 300);
+  });
 
 // Return recipe id given its name
 function getRecipeId(n) {
@@ -125,4 +177,4 @@ function getRecipeId(n) {
 function like(u, r) {
 }
 
-module.exports = app;
+module.exports = User;
