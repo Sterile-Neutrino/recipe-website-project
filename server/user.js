@@ -28,77 +28,51 @@ router.get('/getRecipes', async (req, res) => {
   const recipes = await Recipe.find();
   res.json(recipes);
   });
-  
-// Create a user at /SignUp
+
+// Create a user at /SignUp and append result message to header
 router.post('/SignUp', async (req, res) => {
   var username = req.body.username;
   var password = req.body.password;
   var email = req.body.email;
-  return await signUp(username, password, email)
+  const newUser = new User({
+    username: username,
+    password: password,
+    email: email,
+    uploadList: [],
+    likeList: []
+  });
+  await newUser.save()
   .then(doc => {
-    console.log('signup succeeded');
+    res.append('message', username + ' signed up successfully');
     res.send(true);
+    console.log('signup succeeded');
   })
   .catch(err => {
-    console.log('signup failed');
+    console.log(err.code);
+    if (err.name === 'MongoServerError' && err.code === 11000) {
+      res.append('message', 'Username already exists');
+      console.log(username + ' already exists');
+    } else {
+      res.append('message', 'An error occured while searching database');
+    }
     res.send(false);
+    console.log('signup failed');
   });
 });
 
-/* Create a user with username, password, and email, and store in database
-Example:
-signup('bruin', 'bruin123', 'bruin@ucla.edu')
-.then(value => {console.log("%s signed up successfully.", value.username)})
-.catch(err => {console.log(err)});
-*/
-async function signUp(u, p, e) {
-    const newUser = new User({
-      username: u,
-      password: p,
-      email: e,
-      uploadList: [],
-      likeList: []
-    });
-    return await newUser.save();
-  }
-
-// Return true if the user with username u and password p exists
-async function signIn(u, p) {
-  var user = User.exists({username: u, password: p}, (err, doc) => {
-    if (err) {
-      console.log(err);
-    } else if (doc !== null) {
-      console.log(u + ' signed in successfully');
+// Try to log in a user at /users/login
+router.post('/login', async (req, res) => {
+  var username = req.body.username;
+  var password = req.body.password;
+  User.exists({username: username, password: password}, (err, doc) => {
+    if (doc) {
+      console.log(username + ' signed in successfully');
     } else {
-      console.log('username and password do not match')
+      console.log('Username and password do not match');
     }
+    res.send(doc);
   });
-  return new Promise((resolve, reject) => {
-    if (user) {
-      resolve(true);
-    } else {
-      resolve(false);
-    }
-  });
-}
-
-/*
-signIn('john', 'john123')
-.then(value => {
-    console.log(value);
 })
-.catch(err => {
-    console.log(err);
-});
-*/
-
-// Return recipe id given its name
-function getRecipeId(n) {
-}
-
-// Add recipe r to user u's likeList, and add one to r's like count.
-function like(u, r) {
-}
 
 exports.model = User;
 exports.router = router;

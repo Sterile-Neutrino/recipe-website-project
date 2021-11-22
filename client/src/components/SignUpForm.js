@@ -77,12 +77,12 @@ class SignUpForm extends React.Component{
         .post("/users/SignUp", SignUpData)
         .then((res) => {
             if (res.data) {
-                console.log(SignUpData.username + 'signed up successfully');
+                console.log(res.headers.message);
                 this.setState({ username: "", email: "", password: "" });
                 this.setState({ redirect: "/LoginForm" });
             } else {
-                console.log('signup failed');
-                alert('Sign-up failed');
+                console.log(res.headers.message);
+                alert(res.headers.message);
             }
         })
         .catch((err) => {
