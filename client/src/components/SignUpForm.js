@@ -71,7 +71,6 @@ class SignUpForm extends React.Component{
             alert("Error");
         }); 
         */
-
         // Code modified by Jiayue for testing
         axios
         .post("/users/SignUp", SignUpData)
@@ -88,7 +87,7 @@ class SignUpForm extends React.Component{
         .catch((err) => {
             // if error, notify user
             alert("Error");
-        }); 
+        });
     }
     render(){
         //if directed to other pages, go

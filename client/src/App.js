@@ -9,9 +9,10 @@ import SignUp from "./components/SignUpForm";
 import LoginForm from './components/LoginForm';
 import Home from "./components/Home";
 import Mylist from "./components/Mylist.js";
-import Upload from"./components/Upload.js";
-
+import RecipePage from "./components/recipePage";
+import Upload from "./components/Upload.js";
 axios.defaults.withCredentials = true;
+
 
 
 function App() {
@@ -32,12 +33,18 @@ function App() {
           <Link to="/Home" className="Home">
             HomePage
           </Link>
+
           <Link to="/LoginForm" className="LoginForm">
             Login
           </Link>
+
           <Link to="/SignUp" className="Signup">
             Register
           </Link>
+
+          <Link to="/RecipePage" className="RecipePage">
+            Recipe Page</Link>
+
         </nav>
        
          <Routes>
@@ -45,6 +52,7 @@ function App() {
           <Route exact path="/LoginForm" exact element={<LoginForm/>}/>
           <Route exact path="/Mylist" exact element={<Mylist/>}/>
           <Route exact path="/Home" exact element={<Home/>}/>
+          <Route exact path="/RecipePage" exact element={<RecipePage/>}/>
           <Route exact path="/Upload" exact element={<Upload/>}/>
 
 
@@ -57,14 +65,4 @@ function App() {
 
   );
 }
-
-
-
-
-
-
-
-
-
-
 export default App;

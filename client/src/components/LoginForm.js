@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import SignUp from './SignUpForm';
+import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-import axios from "axios";
+
 
 class LoginForm extends React.Component{
 
@@ -63,7 +64,6 @@ class LoginForm extends React.Component{
         alert("Username and password do not match!");
       });
     */
-
     // Code modified by Jiayue for testing
     axios
       .post("/users/login", LoginData)
