@@ -63,7 +63,7 @@ function Mylist() {
 
   return (
     <Link component={Link} to="/MyList" className="MyListBlock">
-      Enter My List!
+      Enter My Daily List!
     </Link>
   )
 

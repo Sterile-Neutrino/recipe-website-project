@@ -67,3 +67,17 @@
   .App {
     display: inline;
   }
+
+  .SearchBar{
+    color: white;
+    position: fixed;
+    z-index: 3;
+    right: 550px;
+    top:  50px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+
+  }
+ 
+  

@@ -57,7 +57,7 @@ function Upload() {
         const header={"Content-Type": "multipart/form-data" }
 
         axios
-        .post("http://localhost:3000/recipe",recipeData,
+        .post("http://localhost:4000/recipe",recipeData,
            { headers: header,})
             .then( (res) =>{
                 //handle success
