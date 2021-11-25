@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const user = require('./user');
+const recipe = require('./recipe');
 const app = express();
 const db = mongoose.connection;
 const port = 4000;
@@ -23,6 +24,9 @@ app.use(bodyParser.json());
 
 // Set up router at /users
 app.use('/users', user.router);
+
+// Set up router at /recipes
+app.use('/recipes', recipe.router);
 
 // Connect to the database
 mongoose.connect(url, { useNewUrlParser: true })
