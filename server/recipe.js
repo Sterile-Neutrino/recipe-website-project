@@ -3,13 +3,16 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
 const router = express.Router()
 const multer = require('multer');
-const upload = multer()
+
 const ObjectId = require('mongodb').ObjectId
 
 const {GridFsStorage} = require('multer-gridfs-storage');
 let Grid = require("gridfs-stream")
-let connection = mongoose.connection;
+
 Grid.mongo = mongoose.mongo
+
+const mongoURI = 'mongodb+srv://recipe:cs35lfall21@cluster0.2hwcf.mongodb.net/recipe-app?retryWrites=true&w=majority';
+const conn = mongoose.createConnection(mongoURI);
 let gfs;
 
 
@@ -37,15 +40,15 @@ const Recipe = mongoose.model('recipes', recipesSchema);
 
 connection.once('open', () => {
   // Init stream
-  gfs = Grid(connection.db, mongoose.mongo);
+  gfs = Grid(conn.db, mongoose.mongo);
   gfs.collection('uploads');
 });
 
 
 const storage = new GridFsStorage({
-  url: "mongodb+srv://recipe:cs35lfall21@cluster0.2hwcf.mongodb.net/recipe-app?retryWrites=true&w=majority",
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
+  url: mongoURI,
+  file: (_req, file) => {
+    return new Promise((resolve, _reject) => {
       const filename = file.originalname;
       const fileInfo = {
         filename: filename,
@@ -57,8 +60,8 @@ const storage = new GridFsStorage({
 });
 
 //GET ALL IMAGES
-router.get('/Getupload', (req, res) => {
-  gfs.files.find().toArray((err, files) => {
+router.get('/Getupload', (_req, res) => {
+  gfs.files.find().toArray((_err, files) => {
     // Check if files
     if (!files || files.length === 0) {
       res.json("errr");
@@ -80,7 +83,7 @@ router.get('/Getupload', (req, res) => {
 });
 
 //function that selects what type of file can be uploaded
-const fileFilter = (req, file, cb) => {
+const fileFilter = (_req, file, cb) => {
   // reject a file
   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
     cb(null, true);
@@ -126,7 +129,7 @@ router.post('/upload', Upload.single('image'), async (req, res) => {
     likes: 0
   });
   await newRecipe.save()
-  .then(doc => {
+  .then(_doc => {
     res.append('message', title + ' uploaded successfully');
     res.send(true);
     console.log('upload succeeded');
