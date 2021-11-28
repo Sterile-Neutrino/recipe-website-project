@@ -1,53 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios'
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import "./Mylist.css"
+import React from 'react';
+import RecipeList from './RecipeList.js';
+import axios from "axios";
 
-class Mylist extends React.Component{
-     divList = document.querySelector('.listHolder');
-    constructor(props){
-        super(props);
-        /// Setting up state
-        this.state={
-            username: "",
-            password: "",
-            email: "",
-            IsCompleted: false,
-            redirect: null,
-            LoggedIn: false
 
-        };
-    }
-    
-    render() {
-        return(
-        <div className="Mylist" >
-            <h2 class="task-list-title">My lists</h2>
-            <div class="RecipeList">
-            <ul class="list">
-            <nav>
-            <li>
-            <Link to="/" className="ListHolder"><h1>Chicken Sandwich</h1></Link>
-            </li>
-            <li>
-            <Link to="/" className="ListHolder"><h1>Vegetable Salad</h1></Link>
-            </li>
-            <li>
-            <Link to="/" className="ListHolder"><h1>French Fries</h1></Link>
-            </li>
-
-            </nav>
-            </ul>
-             </div>
-        </div>
-        )
+class Test extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        posts: [],
+        postArr: [],
       }
-
-
-
-}
-
-export default Mylist
-
-
-
+      this.handleFetch();
+    }
+  
+    handleFetch = () => {
+      axios.get(`http://localhost:4000/recipes`).then((response) => this.handleResponse(response));
+    };
+  
+    handleResponse = (response) => {
+      let newPosts;
+      if (response.data.length === undefined) {
+        newPosts = [];
+      } else {
+        newPosts = response.data.map(element => {
+          const post = {
+            "id": element._id,
+            "author": element.author,
+            "title": element.title,
+            "description": element.description,
+            "ingredient": element.ingredient,
+            "like": element.like,
+            "category": element.category,
+            "imageId": element.imageId
+          }
+          return post;
+        });
+      }
+      this.setState({
+        posts: newPosts,
+        postArr: newPosts
+      })
+    }
+  
+    handleLike(i) {
+      let newPosts = [...this.state.posts];
+      let post = newPosts[i];
+      post.like = post.like + 1;
+  
+      axios.patch(`http://localhost:4000/posts/${post.id}`, { "like": post.like })
+        .catch(err => console.log(err.response.data));
+      this.setState({
+        posts: newPosts
+      })
+    }
+  
+  
+    
+  
+   
+  
+    render() {
+      return (
+        <div>
+          <h1>Hello</h1>
+          <RecipeList handleFetch={() => this.handleFetch()}
+            handleLike={(i) => this.handleLike(i)}
+            postArr={this.state.postArr} />
+        </div>
+      );
+    }
+  }
+  export default Test;
