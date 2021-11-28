@@ -6,7 +6,7 @@ const multer = require('multer');
 
 const ObjectId = require('mongodb').ObjectId
 
-const {GridFsStorage} = require('multer-gridfs-storage');
+const GridFsStorage = require('multer-gridfs-storage');
 let Grid = require("gridfs-stream")
 
 Grid.mongo = mongoose.mongo
@@ -38,7 +38,7 @@ const Recipe = mongoose.model('recipes', recipesSchema);
 
 
 
-connection.once('open', () => {
+conn.once('open', () => {
   // Init stream
   gfs = Grid(conn.db, mongoose.mongo);
   gfs.collection('uploads');
@@ -82,6 +82,31 @@ router.get('/Getupload', (_req, res) => {
   });
 });
 
+// display an image from the database
+// sample usage:
+// if an image has the name "test.png" in the data base, type the URL:
+// http://localhost:4000/recipes/display/test.png
+router.get('/display/:filename', (req, res) => {
+  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+    if (!file || file.length === 0) {
+      return res.status(404).json({
+        err: 'No such file exists.'
+      })
+    }
+
+    if (file.contentType === 'image/jpeg' || file.contentType === 'image/png' || file.contentType === 'image/jpg') {
+      // output to browser
+      const readstream = gfs.createReadStream(file.filename);
+      readstream.pipe(res);
+    } else {
+      res.status(404).json({
+        err: 'Not an image'
+      })
+    }
+  })
+});
+
+
 //function that selects what type of file can be uploaded
 const fileFilter = (_req, file, cb) => {
   // reject a file
@@ -110,14 +135,7 @@ router.post('/upload', Upload.single('image'), async (req, res) => {
   var description = req.body.description;
   var category = req.body.category;
   var imageId=req.file.id.toString();
-  //console.log(author)
-  //console.log(title)
-  //console.log(calories)
-  //console.log(ingredient)
-  //console.log(description)
-  //console.log(category)
-
-  // TO-DO: var image
+  
   const newRecipe = new Recipe({
     author: author,
     title: title,
@@ -144,6 +162,7 @@ router.post('/upload', Upload.single('image'), async (req, res) => {
 
 
 //SPECIFIC Recipe
+
 router.get('/:postID', async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.postID);
@@ -151,7 +170,9 @@ router.get('/:postID', async (req, res) => {
   } catch (err) {
     res.json({ message: err });
   }
+  
 })
+
 
 exports.model = Recipe;
 exports.router = router;

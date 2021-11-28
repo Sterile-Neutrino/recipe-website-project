@@ -60,7 +60,7 @@ function UploadRecipe() {
             data: recipeData,
             headers: { "Content-Type": "multipart/form-data" },
           })
-            .then( (res) =>{
+            .then((res) =>{
                 //handle success
                 console.log("success");
             })

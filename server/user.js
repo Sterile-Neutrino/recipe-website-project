@@ -8,8 +8,11 @@ const usersSchema = new mongoose.Schema({
   username: {type: String, unique: true},
   password: String,
   email: String,
-  uploadList: [{type: mongoose.ObjectId, ref: 'Recipe'}],
-  likeList: [{type: mongoose.ObjectId, ref: 'Recipe'}]
+  //uploadList: [{type: mongoose.ObjectId, ref: 'Recipe'}],
+  //likeList: [{type: mongoose.ObjectId, ref: 'Recipe'}]
+  // modified by Ke Mi to test; used a different version of mongoose (5.0.15)
+  uploadList: [{type: mongoose.Schema.Types.ObjectId, ref: 'Recipe'}],
+  likeList: [{type: mongoose.Schema.Types.ObjectId, ref: 'Recipe'}]
   },{
   versionKey: false  // Get rid of __v when creating a document
 });
