@@ -36,7 +36,7 @@ function RecipePicture() {
 
     return (
       <div className="picture">
-        <img src="./images/sample.jpg" alt=""/>
+        <img src="/recipes/display/kung-pao-chicken.jpeg" alt=""/>
       </div>
     );
 }
@@ -83,7 +83,7 @@ class recipePage extends React.Component {
 
     getRecipe=()=>{
       var self=this;
-      axios.get(`http://localhost:4000/recipes/61a30821433f18541efc7fc5`)
+      axios.get(`http://localhost:4000/recipes/61a4a21083e49fbd03fefcb8`)
         .then((response)=>{
           self.setState({title:response.data.title})
           self.setState({description:response.data.description})
@@ -105,6 +105,9 @@ class recipePage extends React.Component {
           <div className="RecipeCalories">
            {RecipeCalories(this.state.calories)}
           </div>
+          <div className="RecipePicture">
+            <RecipePicture/>
+          </div>
           <div className="Like">
             <Like/>
           </div>
@@ -117,11 +120,7 @@ class recipePage extends React.Component {
 
 }
 /*
-<div className="RecipeCalories">
-  <RecipeCalories/>
-</div>
-<div className="RecipePicture">
-  <RecipePicture/>
-</div>*/
+
+*/
 
 export default recipePage;
