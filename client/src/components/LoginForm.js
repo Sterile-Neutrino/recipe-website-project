@@ -47,6 +47,7 @@ class LoginForm extends React.Component{
             alert("Cannot be empty form!");
             return;
         }
+    /* Tracy's original code
     axios
       .post("http://localhost:3000/users/login", LoginData)
       .then((res) => {
@@ -62,8 +63,27 @@ class LoginForm extends React.Component{
         this.setState({ name: "", password: "" });
         alert("Username and password do not match!");
       });
-
-
+    */
+    // Code modified by Jiayue for testing
+    axios
+      .post("/users/login", LoginData)
+      .then((res) => {
+        // only remove if complete successfully
+        if (res.data) {
+            let info = res.data;
+            localStorage.setItem('userInfo', JSON.stringify(info));
+        } else {
+            alert('Username and password do not match');
+        }
+        console.log(res.data);
+        this.setState({ username: "", password: "" });
+        this.setState({ redirect: "/Home" });
+      })
+      .catch((err) => {
+        // if error, notify user
+        this.setState({ name: "", password: "" });
+        alert("Error");
+      });
 
 
 
@@ -89,7 +109,7 @@ class LoginForm extends React.Component{
                     <input type="password" placeholder="123456" name="password" id="password" onChange={this.inputPassword} value={this.state.password} />
                 </div>
 
-                <input type="submit" value="LOGIN" onClick={()=> this.finishLogin()}/>
+                <input type="submit" value="LOGIN" />
                 
                 
             </div>

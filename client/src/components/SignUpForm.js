@@ -56,6 +56,7 @@ class SignUpForm extends React.Component{
             return;
         }
 
+        /* Tracy's original code
         axios
         .post("http://localhost:3000/users/SignUp", SignUpData)
         .then((res) => {
@@ -69,7 +70,24 @@ class SignUpForm extends React.Component{
             // if error, notify user
             alert("Error");
         }); 
-        
+        */
+        // Code modified by Jiayue for testing
+        axios
+        .post("/users/SignUp", SignUpData)
+        .then((res) => {
+            if (res.data) {
+                console.log(res.headers.message);
+                this.setState({ username: "", email: "", password: "" });
+                this.setState({ redirect: "/LoginForm" });
+            } else {
+                console.log(res.headers.message);
+                alert(res.headers.message);
+            }
+        })
+        .catch((err) => {
+            // if error, notify user
+            alert("Error");
+        });
     }
     render(){
         //if directed to other pages, go

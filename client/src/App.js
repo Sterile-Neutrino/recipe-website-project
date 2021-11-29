@@ -11,6 +11,7 @@ import Home from "./components/Home";
 import Mylist from "./components/Mylist.js";
 import RecipePage from "./components/recipePage";
 import Upload from "./components/Upload.js";
+import SearchBar from "./components/SearchBar";
 axios.defaults.withCredentials = true;
 
 
@@ -29,7 +30,9 @@ function App() {
       
         <div className="top-bar"></div>
         <nav>
-          <Link to="/Upload" className="logo"><h1>My Recipe App</h1></Link>
+          <Link to="/Upload" className="logo"><h1>Upload My Recipe</h1></Link>
+          <SearchBar />
+          
           <Link to="/Home" className="Home">
             HomePage
           </Link>
@@ -54,6 +57,7 @@ function App() {
           <Route exact path="/Home" exact element={<Home/>}/>
           <Route exact path="/RecipePage" exact element={<RecipePage/>}/>
           <Route exact path="/Upload" exact element={<Upload/>}/>
+          
 
 
         </Routes>

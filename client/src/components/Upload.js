@@ -31,9 +31,10 @@ function SelectionBar(props) {
     ) : "";
 }
 
-function Upload() {
-    const buttonSelectionBar = useState(false);
-    const setButtonSelectionBar = useState(true);
+function UploadRecipe() {
+    const [buttonSelectionBar, setButtonSelectionBar] = useState(false);
+   // const buttonSelectionBar = useState(false);
+    //const setButtonSelectionBar = useState(true);
     function handleSubmit() {
         //check if user logged in
         //local storage 在前端 login里面set了
@@ -43,7 +44,7 @@ function Upload() {
             return;
         }
         user = JSON.parse(user);
-        let recipeData = new FormData();
+        var recipeData = new FormData();
         
         recipeData.append("author", user.username);
         recipeData.append("title", document.getElementById("input-title").value);
@@ -52,14 +53,14 @@ function Upload() {
         recipeData.append("description", document.getElementById("input-description").value);
         recipeData.append("category", document.getElementById("input-category").value);
         recipeData.append("image", document.getElementById("input-image").files[0]);
-        
 
-        const header={"Content-Type": "multipart/form-data" }
-
-        axios
-        .post("http://localhost:3000/recipe",recipeData,
-           { headers: header,})
-            .then( (res) =>{
+        axios({
+            method: "post",
+            url: "/recipes/upload",
+            data: recipeData,
+            headers: { "Content-Type": "multipart/form-data" },
+          })
+            .then((res) =>{
                 //handle success
                 console.log("success");
             })
@@ -67,11 +68,29 @@ function Upload() {
                 //handle error
                 console.log(res);
             });
+            setButtonSelectionBar(false);
     }
 
     return (  
+        <div className="button-container">
+        <button className="button" type="button" onClick={() => setButtonSelectionBar(true)}>
+                Upload
+            </button>
         <SelectionBar trigger={buttonSelectionBar} setTrigger={setButtonSelectionBar} handleSubmit={handleSubmit} />
+        </div>
     )
 }
 
+
+
+class Upload extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return ( 
+                <UploadRecipe />
+        );
+    }
+}
 export default Upload;
