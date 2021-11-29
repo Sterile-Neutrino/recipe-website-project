@@ -3,9 +3,14 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const user = require('./user');
 const recipe = require('./recipe');
-const app = express();
+const cors=require('cors');
+const app = express();  
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 const db = mongoose.connection;
 const port = 4000;
+
+
+
 // To use a local mongodb
 // const url = 'mongodb://127.0.0.1:27017/recipes';
 
