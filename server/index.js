@@ -14,7 +14,7 @@ const url = 'mongodb+srv://recipe:cs35lfall21@cluster0.2hwcf.mongodb.net\
 /recipe-app?retryWrites=true&w=majority';
 
 // Set cors
-app.use(cors({credentials: true, origin: 'http://localhost:4000'}));
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
 // Set up body-parser for express
 app.use(bodyParser.urlencoded({extended: true}));
