@@ -8,20 +8,6 @@ import range from "lodash/range";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Upload from './Upload';
 
-// function recipe(props) {
-//     return (
-//       <button className="Recipe">
-//         {/* {this.props.title} */}
-//         Chicken Sandwitch
-//       </button>
-//     )
-// }
-
-// const Recipe = ({ title, index, style = {} }) => {
-//   <div className={index % 2 ? "ListItemOdd" : "ListItemEven"} style={style}>
-//     {recipeList[title % 3]}
-//   </div>
-// };
 
 const recipeList = ["Chicken Sandwitch", "Fried Rice", "Spaghetti with Italian Meatball"];
 
@@ -79,25 +65,46 @@ function UploadRecipe() {
 
 }
 
-function Recommendation() {
+class Recommendation extends React.Component {
 
-  return (
-    <Link component={Link} to="/RecipePage" className="RecommendationBlock">
-      <h1 className="RecommendationTitle">
-        Recommended to You: Roast Chicken!
-      </h1>
-      <h2 className="RecommendationContent">
-      Roast chicken is chicken prepared as food by roasting whether in a home kitchen, over a fire, or with a rotisserie (rotary spit). Generally, the chicken is roasted with its own fat and juices...
-      </h2>
-      <div className="RecommendationThumbnail">
-        <img src="./images/sample.jpg" alt=""/>
-      </div>
-    </Link>
+    constructor(props) {
+      super(props);
+      this.state = {
+          title: '',
+          desciption: '',
 
-    // <Link component={Link} to="/RecipePage" className="RecommendationThumbnail">
-    //   <img src="./images/sample.jpg" alt=""/>
-    // </Link>
-  )
+      };
+      this.componentDidMount = this.componentDidMount.bind(this)
+  }
+
+componentDidMount = () => {  
+  var self = this;
+  axios.get('/recipes/61a4a21083e49fbd03fefcb8')
+  .then(function (response) {
+    console.log(response.data);
+    self.setState({title: response.data.title, 
+      desciption: response.data.description})
+  });
+}
+
+  render() {
+      return (
+        <div>
+          <Link component={Link} to="/RecipePage" className="RecommendationBlock">
+          <h1 className="RecommendationTitle" componentDidMount>
+            {this.state.title}
+          </h1>
+          <h2 className="RecommendationContent">
+            {this.state.desciption.slice(0,200) + "..."}
+          </h2>
+          <div className="RecommendationThumbnail">
+            <img src='/recipes/display/kung-pao-chicken.jpeg' alt=""/>
+          </div>
+          </Link>
+        </div>
+
+      );
+  }
 
 }
 
