@@ -1,76 +1,141 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser')
+const util = require("util");
+const multer = require("multer");
+const { GridFsStorage } = require("multer-gridfs-storage");
 const router = express.Router()
-const multer = require('multer');
-
-const ObjectId = require('mongodb').ObjectId
-
-const GridFsStorage = require('multer-gridfs-storage');
-let Grid = require("gridfs-stream")
-
-Grid.mongo = mongoose.mongo
-
-const mongoURI = 'mongodb+srv://recipe:cs35lfall21@cluster0.2hwcf.mongodb.net/recipe-app?retryWrites=true&w=majority';
-const conn = mongoose.createConnection(mongoURI);
-let gfs;
-
-
 
 // Schema for recipes
 const recipesSchema = new mongoose.Schema({
-    author: String,
-    title: String,
-    description: String,
-    calories: Number,
-    ingredients: String,
-    category: String,
-    likes: Number,
-    imageId: String
-  
-    },{
-    versionKey: false  // Get rid of __v when creating a document
-  });
+  author: String,
+  title: String,
+  description: String,
+  calories: Number,
+  ingredients: String,
+  category: String,
+  likes: Number,
+  imageId: String
+}, {
+  versionKey: false // Get rid of __v when creating a document
+});
 
 // Mongoose model for recipes
 const Recipe = mongoose.model('recipes', recipesSchema);
 
-
-
-
-conn.once('open', () => {
-  // Init stream
-  gfs = Grid(conn.db, mongoose.mongo);
-  gfs.collection('uploads');
+var storage = new GridFsStorage({
+  db: mongoose.connection,
+  options: {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  },
+  file: (req, file) => {
+    const match = ["image/png", "image/jpeg"];
+    if (match.indexOf(file.mimetype) === -1) {
+      console.log('Image type not supported');
+      return null;
+    } else {
+      return {
+        bucketName: 'image',
+        filename: 'image_' + Date.now()
+      };
+    }
+  }
 });
 
+// Filter out non png/jepg files when uploading
+const fileFilter = (req, file, cb) => {
+  const match = ["image/png", "image/jpeg"];
+  // Reject a file of wrong type
+  if (match.indexOf(file.mimetype) === -1) {
+    req.fileValidationError = 'Image type not supported';
+    cb(null, false, req.fileValidationError);
+    console.log('Image type not supported');
+  } else {
+    cb(null, true);
+  }
+};
 
-const storage = new GridFsStorage({
-  url: mongoURI,
-  file: (_req, file) => {
-    return new Promise((resolve, _reject) => {
-      const filename = file.originalname;
-      const fileInfo = {
-        filename: filename,
-        bucketName: 'uploads'
-      };
-      resolve(fileInfo);
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter
+}).single('image');
+
+// Make an async version of upload()
+const aSyncUpload = util.promisify(upload);
+
+// Handle Recipe Upload
+router.post('/upload', aSyncUpload, async (req, res) => {
+  if ((req.fileValidationError)) {
+    res.append('message', req.fileValidationError);
+    res.send(false);
+  } else {
+    var author = req.body.author;
+    var title = req.body.title;
+    var calories = req.body.calories;
+    var ingredient = req.body.ingredient;
+    var description = req.body.description;
+    var category = req.body.category;
+    var imageId = req.file.id.toString();
+    const newRecipe = new Recipe({
+      author: author,
+      title: title,
+      description: description,
+      calories: calories,
+      ingredients: ingredient,
+      category: category,
+      imageId: imageId,
+      likes: 0
+    });
+    await newRecipe.save()
+    .then(doc => {
+      res.append('message', title + ' uploaded successfully');
+      res.send(true);
+      console.log('Upload succeeded');
+    })
+    .catch(err => {
+      res.append('message', 'An error occured while saving your recipe');
+      res.send(false);
+      console.log(err);
+      console.log('Upload failed');
     });
   }
 });
 
-//GET ALL IMAGES
-router.get('/Getupload', (_req, res) => {
-  gfs.files.find().toArray((_err, files) => {
+// Get an image by its objectId in databse. For example, the following url
+// directs to the image whose objectId is 000000000000000000000000:
+// http://localhost:4000/recipes/image/000000000000000000000000
+router.get('/image/:imageId', (req, res) => {
+  imageId = mongoose.Types.ObjectId(req.params.imageId);
+  var bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    bucketName: 'image',
+  });
+  bucket
+  .find({
+    _id: imageId
+  })
+  .toArray((err, files) => {
+    if (!files || files.length === 0) {
+      console.log('Image not found');
+      res.status(404).send('Image not found');
+    } else {
+      bucket.openDownloadStream(imageId).pipe(res);
+    }
+  });
+});
+
+//Get all image data
+router.get('/getImages', (req, res) => {
+  var bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    bucketName: 'image',
+  });
+  bucket.find().toArray((err, files) => {
     // Check if files
     if (!files || files.length === 0) {
-      res.json("errr");
+      res.json("No image exists");
     } else {
       files.map(file => {
-        if (
-          file.contentType === 'image/jpeg' ||
-          file.contentType === 'image/png'
-        ) {
+        if (file.contentType === 'image/jpeg' ||
+            file.contentType === 'image/png') {
           file.isImage = true;
         }
         else {
@@ -82,98 +147,4 @@ router.get('/Getupload', (_req, res) => {
   });
 });
 
-// display an image from the database
-// sample usage:
-// if an image has the name "test.png" in the data base, type the URL:
-// http://localhost:4000/recipes/display/test.png
-router.get('/display/:filename', (req, res) => {
-  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-    if (!file || file.length === 0) {
-      return res.status(404).json({
-        err: 'No such file exists.'
-      })
-    }
-
-    if (file.contentType === 'image/jpeg' || file.contentType === 'image/png' || file.contentType === 'image/jpg') {
-      // output to browser
-      const readstream = gfs.createReadStream(file.filename);
-      readstream.pipe(res);
-    } else {
-      res.status(404).json({
-        err: 'Not an image'
-      })
-    }
-  })
-});
-
-
-//function that selects what type of file can be uploaded
-const fileFilter = (_req, file, cb) => {
-  // reject a file
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
-// initialize multer , storing all file in this Path
-const Upload = multer({
-  storage: storage,
-  fileFilter: fileFilter
-});
-  
-
-
-
-// Handle Recipe Upload
-router.post('/upload', Upload.single('image'), async (req, res) => {
-  var author = req.body.author;
-  var title = req.body.title;
-  var calories = req.body.calories;
-  var ingredient = req.body.ingredient;
-  var description = req.body.description;
-  var category = req.body.category;
-  var imageId=req.file.id.toString();
-  
-  const newRecipe = new Recipe({
-    author: author,
-    title: title,
-    description: description,
-    calories: calories,
-    ingredients: ingredient,
-    category: category,
-    imageId: imageId,
-    likes: 0
-  });
-  await newRecipe.save()
-  .then(_doc => {
-    res.append('message', title + ' uploaded successfully');
-    res.send(true);
-    console.log('upload succeeded');
-  })
-  .catch(err => {
-    console.log(err.code);
-    console.log(err);
-    //TO-DO: Error Handling
-    console.log('upload failed');
-  });
-});
-
-
-//SPECIFIC Recipe
-
-router.get('/:postID', async (req, res) => {
-  try {
-    const recipe = await Recipe.findById(req.params.postID);
-    res.json(recipe);
-  } catch (err) {
-    res.json({ message: err });
-  }
-  
-})
-
-
-exports.model = Recipe;
 exports.router = router;
-

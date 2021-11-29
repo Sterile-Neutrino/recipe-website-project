@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser')
 const router = express.Router()
 
 // Schema for users
@@ -77,5 +76,4 @@ router.post('/login', async (req, res) => {
   });
 })
 
-exports.model = User;
 exports.router = router;
