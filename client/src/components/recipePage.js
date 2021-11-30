@@ -59,6 +59,7 @@ class recipePage extends React.Component {
         this.state = {
           title:'',//gets a list of recipes
           description:'',
+          calories:'',
           likes:0,
           category:'',
           ingredients:'',
@@ -84,7 +85,8 @@ class recipePage extends React.Component {
             self.setState({liked:true});
           };
           if (response.data.myList.includes('61a588e7de7ab6c1924f69a1')){
-            self.setState({Added:true});
+            self.setState({added:true});
+            console.log(self.state.added);
           }
         })
     }
