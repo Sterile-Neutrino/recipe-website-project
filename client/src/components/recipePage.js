@@ -161,7 +161,7 @@ class recipePage extends React.Component {
     }
     render() {
       let like_button_name = this.state.liked ? "LikedButton" : "LikeButton";
-      let like_button_text=this.state.liked ? "Dislike " : "Like ";
+      let like_button_text=this.state.liked ? "Liked " : "Like ";
       let add_button_name = this.state.added ? "FavoritedButton" : "FavoriteButton";
       let add_button_text=this.state.added ? "Remove from " : "Add to";
       return (
