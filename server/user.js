@@ -49,6 +49,9 @@ router.post('/like', async (req, res) => {
 
 // Add recipe id to a user's my-list
 router.post('/addToList', async (req, res) => {
+  console.log('Recipe added to my list');
+
+
   var userId = mongoose.Types.ObjectId(req.body.userId);
   var user = null;
   try {
