@@ -75,10 +75,10 @@ class recipePage extends React.Component {
     componentDidMount = ()=>{
       const id = this.props.params.id;
       this.getRecipe(id);
-      this.getUser();
+      this.getUser(id);
     }
     
-    getUser=()=>{
+    getUser=(id)=>{
       var self=this;
       let userid=localStorage.getItem('userInfo');
       userid=JSON.parse(userid);
@@ -86,11 +86,11 @@ class recipePage extends React.Component {
       axios.get(`http://localhost:4000/users/find/${userid}`)
         .then((response)=>{
           console.log(response.data)//for debugging
-          if (response.data.likeList.includes('61a588e7de7ab6c1924f69a1')){
+          if (response.data.likeList.includes(id)){
             self.setState({liked:true});
             console.log(response.data.likeList)
           };
-          if (response.data.myList.includes('61a588e7de7ab6c1924f69a1')){
+          if (response.data.myList.includes(id)){
             self.setState({added:true});
           }
         })
@@ -146,7 +146,7 @@ class recipePage extends React.Component {
           userId: user,
           recipeId: id
         };
-        axios.post('/users/addToList',data);
+        axios.post(`/users/addToList`,data);
       }
       else if (this.state.added==true){ //click to remove from list
         this.setState({added:false});
@@ -156,7 +156,7 @@ class recipePage extends React.Component {
           userId: user,
           recipeId: id
         };
-        axios.post('/users/remove',data);
+        axios.post(`localhost:4000/users/removeFromList`,data);
       }
     }
     render() {
