@@ -7,9 +7,9 @@ const usersSchema = new mongoose.Schema({
   username: {type: String, unique: true},
   password: String,
   email: String,
-  uploadList: [{type: mongoose.ObjectId, ref: 'Recipe'}],
-  likeList: [{type: mongoose.ObjectId, ref: 'Recipe'}],
-  myList: [{type: mongoose.ObjectId, ref: 'Recipe'}]
+  uploadList: [String],
+  likeList: [String],
+  myList: [String]
   },{
   versionKey: false  // Get rid of __v when creating a document
 });
@@ -103,7 +103,8 @@ router.post('/SignUp', async (req, res) => {
     password: password,
     email: email,
     uploadList: [],
-    likeList: []
+    likeList: [],
+    myList: []
   });
   await newUser.save()
   .then(doc => {
