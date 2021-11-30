@@ -45,9 +45,6 @@ function App() {
             Register
           </Link>
 
-          <Link to="/RecipePage" className="RecipePage">
-            Recipe Page</Link>
-
         </nav>
        
          <Routes>

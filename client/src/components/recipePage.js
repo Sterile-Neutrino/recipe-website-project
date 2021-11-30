@@ -58,6 +58,7 @@ class recipePage extends React.Component {
         super(props)
         this.state = {
           id: '',
+          user:'',
           title:'',//gets a list of recipes
           description:'',
           calories:'',
@@ -72,10 +73,7 @@ class recipePage extends React.Component {
     }
 
     componentDidMount = ()=>{
-      console.log('10000')
-      console.log(this.props.params.id)
       const id = this.props.params.id;
-      // const id = '61a588e7de7ab6c1924f69a1';
       this.getRecipe(id);
       this.getUser();
     }
@@ -83,29 +81,25 @@ class recipePage extends React.Component {
     getUser=()=>{
       var self=this;
       let userid=localStorage.getItem('userInfo');
-      console.log(userid)
+      userid=JSON.parse(userid);
+      self.setState({user:userid});
       axios.get(`http://localhost:4000/users/find/${userid}`)
         .then((response)=>{
-          // console.log(response.data.myList)//for debugging
+          console.log(response.data)//for debugging
           if (response.data.likeList.includes('61a588e7de7ab6c1924f69a1')){
             self.setState({liked:true});
+            console.log(response.data.likeList)
           };
           if (response.data.myList.includes('61a588e7de7ab6c1924f69a1')){
             self.setState({added:true});
-            console.log(self.state.added);
           }
         })
     }
 
     getRecipe=(id)=>{
       var self=this;
-      // console.log(`http://localhost:4000/recipes/${id}`)
-      // console.log('1000')
-
-      // console.log(`http://localhost:4000/recipes/${id}`);
       axios.get(`http://localhost:4000/recipes/${id}`)
         .then((response)=>{
-          console.log(response.data);
           self.setState({id:response.data._id})
           self.setState({title:response.data.title})
           self.setState({description:response.data.description})
@@ -113,7 +107,6 @@ class recipePage extends React.Component {
           self.setState({likes:response.data.likes})
           self.setState({category:response.data.category})
           self.setState({ingredients:response.data.ingredients})
-          // console.log(response.data); //for debugging
         })
     }
 
@@ -124,8 +117,9 @@ class recipePage extends React.Component {
         this.setState({ likes: likes + 1 });
         this.setState({liked:true});
         let id = this.state.id
+        let user = this.state.user
         var data={
-          userId: '61a588bbde7ab6c1924f6998',
+          userId: {user},
           recipeId: {id}
         };
         axios.post(`users/like`, data);
@@ -140,8 +134,9 @@ class recipePage extends React.Component {
       if (this.state.added==false){ //click to add
         this.setState({added:true});
         let id = this.state.id
+        let user = this.state.user
         var data={
-          userId: '61a588bbde7ab6c1924f6998',
+          userId: {user},
           recipeId: {id}
         };
         axios.post('users/addToList',data);
