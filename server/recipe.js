@@ -210,6 +210,54 @@ router.get('/:postID', async (req, res) => {
   }
 })
 
+// increment the likes count of a recipe by 1
+router.post('/like', async (req, res) => {
+  var recipeId = mongoose.Types.ObjectId(req.body.recipeId);
+  var recipe = null;
+  try {
+    recipe = await Recipe.findById(recipeId);
+  } catch (err) {
+    console.log(err);
+    console.log('An error occured when searching for recipe')
+  }
+  if (recipe) {
+    recipe.likes = recipe.likes + 1;
+    recipe.save()
+    .then(doc => {
+      res.send(true);
+      console.log('Recipe likes count incremented');
+    })
+    .catch(err => {
+      res.send(false);
+      console.log(err);
+    })
+  }
+});
+
+// decrement the likes count of a recipe by 1
+router.post('/dislike', async (req, res) => {
+  var recipeId = mongoose.Types.ObjectId(req.body.recipeId);
+  var recipe = null;
+  try {
+    recipe = await Recipe.findById(recipeId);
+  } catch (err) {
+    console.log(err);
+    console.log('An error occured when searching for recipe')
+  }
+  if (recipe) {
+    recipe.likes = recipe.likes - 1;
+    recipe.save()
+    .then(doc => {
+      res.send(true);
+      console.log('Recipe likes count decremented');
+    })
+    .catch(err => {
+      res.send(false);
+      console.log(err);
+    })
+  }
+});
+
 // Return an array of words from the input string, using non-alphanumeric
 // characters as separators.
 function parse(s) {

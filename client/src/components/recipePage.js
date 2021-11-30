@@ -123,6 +123,7 @@ class recipePage extends React.Component {
           recipeId: id
         };
         axios.post(`/users/like`, data);
+        axios.post(`/recipes/like`, data);
       }
       else if (this.state.liked==true){ //click to dislike
         this.setState({liked:false});
@@ -135,6 +136,7 @@ class recipePage extends React.Component {
           recipeId: id
         };
         axios.post(`/users/dislike`, data);
+        axios.post(`/recipes/dislike`, data);
       }
     }
     AddtoFavorite(){
