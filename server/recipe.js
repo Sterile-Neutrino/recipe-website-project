@@ -147,4 +147,16 @@ router.get('/getImages', (req, res) => {
   });
 });
 
+//SPECIFIC Recipe
+
+router.get('/:postID', async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.postID);
+    res.json(recipe);
+  } catch (err) {
+    res.json({ message: err });
+  }
+  
+})
+
 exports.router = router;

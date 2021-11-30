@@ -36,7 +36,7 @@ function RecipePicture() {
 
     return (
       <div className="picture">
-        <img src="/recipes/display/kung-pao-chicken.jpeg" alt=""/>
+        <img src="/recipes/image/61a4a21083e49fbd03fefcb8" alt=""/>
       </div>
     );
 }
