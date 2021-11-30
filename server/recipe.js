@@ -213,7 +213,7 @@ router.get('/:postID', async (req, res) => {
 // Return an array of words from the input string, using non-alphanumeric
 // characters as separators.
 function parse(s) {
-  return s.split(/[\W_]+/);
+  return s.toString().toLowerCase().split(/[\W_]+/);
 }
 
 // Return an array of key words of a recipe object for search.
@@ -221,7 +221,6 @@ function keyWords(recipe) {
   var result = [];
   var uniqueResult = [];
   if (recipe instanceof Recipe) {
-    result = result.concat(parse(recipe.author));
     result = result.concat(parse(recipe.title));
     result = result.concat(parse(recipe.description));
     result = result.concat(parse(recipe.calories));
@@ -240,19 +239,20 @@ function keyWords(recipe) {
 
 // Search recipes and get results that are related. The content from search
 // bar should be a string in req.body
-router.get('/search', async (req, res) => {
+router.get('/search/:input', async (req, res) => {
   var searchInput = [];
   var recipeArray = [];
-  var resultSet = set();
+  var resultSet = new Set();
   var resultIdList = [];
   try {
     // Parse the search input into words
-    searchInput = parse(req.body);
-    recipeArray = Recipe.find().toArray();
-    for (let recipe in recipeArray) {
-      if (!resultSet.has(recipe)) {
+    //searchInput = parse(req.body);
+    searchInput = parse(req.params.input);
+    recipeArray = await Recipe.find();
+    for (const recipe of recipeArray) {
+      if (!(resultSet.has(recipe))) {
         var recipeKeyWords = keyWords(recipe);
-        for (let key in searchInput) {
+        for (const key of searchInput) {
           if (recipeKeyWords.includes(key)) {
             resultSet.add(recipe);
             break;
@@ -265,11 +265,11 @@ router.get('/search', async (req, res) => {
     res.send(null);
   }
   if (resultSet.size !== 0) {
-    for (let recipe in resultSet) {
+    for (const recipe of resultSet) {
       resultIdList.push(recipe._id.toString());
     }
     // Return a list of recipe Ids
-    res.json(resultIdList);
+    res.send(resultIdList);
     console.log('Search results returned');
   } else {
     res.send(null);

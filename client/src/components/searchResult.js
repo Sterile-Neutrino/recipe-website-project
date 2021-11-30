@@ -23,7 +23,7 @@ class SearchResult extends React.Component {
     componentDidMount = ()=>{
         console.log(this.props.params.s)
         this.searchWord = this.props.params.s;
-          axios.get(`http://localhost:4000/search/${this.searchWord}`)
+          axios.get(`http://localhost:4000/recipes/search/${this.searchWord}`)
         .then((response)=>{
           this.SearchResult = response.data;
           // console.log(response.data); //for debugging
