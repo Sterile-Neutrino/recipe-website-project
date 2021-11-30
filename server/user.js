@@ -47,6 +47,30 @@ router.post('/like', async (req, res) => {
   }
 });
 
+// Remove recipe id from a user's like list
+router.post('/dislike', async (req, res) => {
+  var userId = mongoose.Types.ObjectId(req.body.userId);
+  var user = null;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    console.log(err);
+    console.log('An error occured when searching for user')
+  }
+  if (user) {
+    user.likeList.remove(req.body.recipeId);
+    user.save()
+    .then(doc => {
+      res.send(true);
+      console.log('Recipe Disliked');
+    })
+    .catch(err => {
+      res.send(false);
+      console.log(err);
+    })
+  }
+});
+
 // Add recipe id to a user's my-list
 router.post('/addToList', async (req, res) => {
   var userId = mongoose.Types.ObjectId(req.body.userId);
