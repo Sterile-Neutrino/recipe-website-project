@@ -99,8 +99,8 @@ componentDidMount = () => {
       return (
         <div>
           <Link to={{
-              pathname: `/RecipePage/61a5f57bbd14dc54b5f54b85`, //test for dynamic route: path id
-            }} /*component={recipePage}*/ className="RecommendationBlock">
+              pathname: `/RecipePage/61a588e7de7ab6c1924f69a1`, //test for dynamic route: path id
+            }} component={recipePage} className="RecommendationBlock">
             <h1 className="RecommendationTitle" componentDidMount>
               {this.state.title}
             </h1>
