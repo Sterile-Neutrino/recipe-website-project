@@ -77,10 +77,11 @@ class recipePage extends React.Component {
     
     getUser=()=>{
       var self=this;
-      let userid='61a588bbde7ab6c1924f6998';
+      let userid=localStorage.getItem('userInfo');
+      console.log(userid)
       axios.get(`http://localhost:4000/users/find/${userid}`)
         .then((response)=>{
-          console.log(response.data.myList)//for debugging
+          console.log(response.data)//for debugging
           if (response.data.likeList.includes('61a588e7de7ab6c1924f69a1')){
             self.setState({liked:true});
           };
@@ -100,8 +101,7 @@ class recipePage extends React.Component {
           self.setState({calories:response.data.calories})
           self.setState({likes:response.data.likes})
           self.setState({category:response.data.category})
-          self.setState({ingredients:response.data.ingredients})
-          console.log(response.data); //for debugging
+          self.setState({ingredients:response.data.ingredients}) //for debugging
         })
     }
 
