@@ -83,6 +83,23 @@ class Mylist extends React.Component {
         super(props);
     }
 
+    getUser=()=>{
+      var self=this;
+      let userid=localStorage.getItem('userInfo');
+      axios.get(`http://localhost:4000/users/find/${userid}`)
+        .then((response)=>{
+          console.log(response.data.myList)//for debugging
+          if (response.data.likeList.includes('61a588e7de7ab6c1924f69a1')){
+            self.setState({liked:true});
+          };
+          if (response.data.myList.includes('61a588e7de7ab6c1924f69a1')){
+            self.setState({added:true});
+            console.log(self.state.added);
+          }
+        })
+    }
+
+
     render() {
       return (
         <div>

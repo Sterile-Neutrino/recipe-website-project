@@ -46,7 +46,7 @@ function UploadRecipe() {
         user = JSON.parse(user);
         var recipeData = new FormData();
         
-        recipeData.append("author", user.username);
+        recipeData.append("author", user);
         recipeData.append("title", document.getElementById("input-title").value);
         recipeData.append("calories", document.getElementById("input-calories").value);
         recipeData.append("ingredient", document.getElementById("input-ingredient").value);
