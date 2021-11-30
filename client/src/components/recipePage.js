@@ -133,11 +133,11 @@ class recipePage extends React.Component {
     AddtoFavorite(){
       if (this.state.added==false){ //click to add
         this.setState({added:true});
-        let id = this.state.id
-        let user = this.state.user
+        //let id = this.state.id
+        //let user = this.state.user
         var data={
-          userId: {user},
-          recipeId: {id}
+          userId: '61a588bbde7ab6c1924f6998',
+          recipeId: '61a5f57bbd14dc54b5f54b85'
         };
         axios.post('users/addToList',data);
       }
