@@ -130,6 +130,8 @@ class recipePage extends React.Component {
         this.setState({likes:likes-1});
       }
     }
+
+
     AddtoFavorite(){
       if (this.state.added==false){ //click to add
         this.setState({added:true});
@@ -145,6 +147,8 @@ class recipePage extends React.Component {
         this.setState({added:false});
       }
     }
+
+    
     render() {
       let like_button_name = this.state.liked ? "LikedButton" : "LikeButton";
       let like_button_text=this.state.liked ? "Dislike " : "Like ";
