@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import "./recipePage.css"
 
 function RecipeName (name){
@@ -44,11 +45,10 @@ function RecipeCalories(calories) {
       </div>
     );
 }
-function RecipePicture() {
-
+function RecipePicture(image_src) {
     return (
       <div className="picture">
-        <img src="/recipes/recipeImage/61a588e7de7ab6c1924f69a1" alt=""/>
+        <img src={image_src} alt=""/>
       </div>
     );
 }
@@ -57,6 +57,7 @@ class recipePage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+          id: '',
           title:'',//gets a list of recipes
           description:'',
           calories:'',
@@ -71,7 +72,11 @@ class recipePage extends React.Component {
     }
 
     componentDidMount = ()=>{
-      this.getRecipe();
+      console.log('10000')
+      console.log(this.props.params.id)
+      const id = this.props.params.id;
+      // const id = '61a588e7de7ab6c1924f69a1';
+      this.getRecipe(id);
       this.getUser();
     }
     
@@ -81,7 +86,7 @@ class recipePage extends React.Component {
       console.log(userid)
       axios.get(`http://localhost:4000/users/find/${userid}`)
         .then((response)=>{
-          console.log(response.data)//for debugging
+          // console.log(response.data.myList)//for debugging
           if (response.data.likeList.includes('61a588e7de7ab6c1924f69a1')){
             self.setState({liked:true});
           };
@@ -92,16 +97,23 @@ class recipePage extends React.Component {
         })
     }
 
-    getRecipe=()=>{
+    getRecipe=(id)=>{
       var self=this;
-      axios.get(`http://localhost:4000/recipes/61a588e7de7ab6c1924f69a1`)
+      // console.log(`http://localhost:4000/recipes/${id}`)
+      // console.log('1000')
+
+      // console.log(`http://localhost:4000/recipes/${id}`);
+      axios.get(`http://localhost:4000/recipes/${id}`)
         .then((response)=>{
+          console.log(response.data);
+          self.setState({id:response.data._id})
           self.setState({title:response.data.title})
           self.setState({description:response.data.description})
           self.setState({calories:response.data.calories})
           self.setState({likes:response.data.likes})
           self.setState({category:response.data.category})
-          self.setState({ingredients:response.data.ingredients}) //for debugging
+          self.setState({ingredients:response.data.ingredients})
+          // console.log(response.data); //for debugging
         })
     }
 
@@ -111,9 +123,10 @@ class recipePage extends React.Component {
         const likes=this.state.likes;
         this.setState({ likes: likes + 1 });
         this.setState({liked:true});
+        let id = this.state.id
         var data={
           userId: '61a588bbde7ab6c1924f6998',
-          recipeId: '61a588e7de7ab6c1924f69a1'
+          recipeId: {id}
         };
         axios.post(`users/like`, data);
       }
@@ -126,9 +139,10 @@ class recipePage extends React.Component {
     AddtoFavorite(){
       if (this.state.added==false){ //click to add
         this.setState({added:true});
+        let id = this.state.id
         var data={
           userId: '61a588bbde7ab6c1924f6998',
-          recipeId: '61a588e7de7ab6c1924f69a1'
+          recipeId: {id}
         };
         axios.post('users/addToList',data);
       }
@@ -157,6 +171,7 @@ class recipePage extends React.Component {
           </div>
           <div className="RecipePicture">
             <RecipePicture/>
+            {RecipePicture('/recipes/recipeImage/' + this.state.id)}
           </div>
           <button className = {like_button_name}  onClick={this.Likeit}>
              {like_button_text}this recipe: {this.state.likes}  👍🏻
@@ -167,10 +182,19 @@ class recipePage extends React.Component {
         </div>
       );
     }
-
 }
-/*
 
-*/
+const withRouter = WrappedComponent => props => {
+  const params = useParams();
+  // etc... other react-router-dom v6 hooks
 
-export default recipePage;
+  return (
+    <WrappedComponent
+      {...props}
+      params={params}
+      // etc...
+    />
+  );
+};
+
+export default withRouter(recipePage);
