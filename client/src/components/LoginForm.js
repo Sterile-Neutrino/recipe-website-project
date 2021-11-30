@@ -14,7 +14,7 @@ class LoginForm extends React.Component{
             username: "",
             password: "",
             redirect: null,
-            logged: false
+            
 
         };
         /// Setting up functions - set 'this' context to this class
@@ -76,13 +76,15 @@ class LoginForm extends React.Component{
         if (res.data) {
             let info = res.data.username;
             localStorage.setItem('userInfo', JSON.stringify(info));
+            this.setState({ redirect: "/Home" });
         } else {
             alert('Username and password do not match');
+            this.setState({ redirect: "/" });
         }
         console.log(res.data);
         this.setState({ username: "", password: "" });
-        this.setState({ redirect: "/Home" });
-        this.setState({ logged: true });
+       
+        
       })
       .catch((err) => {
         // if error, notify user

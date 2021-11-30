@@ -30,7 +30,7 @@ function App() {
       
         <div className="top-bar"></div>
         <nav>
-          <Link to="/Upload" className="logo"><h1>Upload My Recipe</h1></Link>
+          <Link to="/Upload" className="logo"><h1> My Recipe App</h1></Link>
           <SearchBar />
           
           <Link to="/Home" className="Home">
