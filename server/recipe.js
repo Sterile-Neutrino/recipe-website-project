@@ -123,6 +123,9 @@ router.get('/image/:imageId', (req, res) => {
   });
 });
 
+// Get an image by the id of its associated recipe. For example, the following
+//url directs to the image that belongs to recipe 000000000000000000000000:
+// http://localhost:4000/recipes/image/000000000000000000000000
 router.get('/recipeImage/:recipeId', async (req, res) => {
   var recipeId = mongoose.Types.ObjectId(req.params.recipeId);
   var imageId = null;

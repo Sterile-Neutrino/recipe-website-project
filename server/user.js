@@ -24,12 +24,25 @@ router.get('/getUsers', async (req, res) => {
   const users = await User.find();
   res.json(users);
   });
-  
-// Display all recipes at /getRecipes
-router.get('/getRecipes', async (req, res) => {
-  const recipes = await Recipe.find();
-  res.json(recipes);
-  });
+
+// Get user json by userId
+router.get('/find/:userId', async (req, res) => {
+  var userId = mongoose.Types.ObjectId(req.params.userId);
+  var user = null;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    console.log(err);
+    console.log('An error occured when searching for user')
+  }
+  if (user) {
+    res.json(user);
+    console.log('Found user: ' + user.username);
+  } else {
+    res.json(null);
+    console.log('User not found');
+  }
+});
 
 // Create a user at /SignUp and append result message to header
 router.post('/SignUp', async (req, res) => {
