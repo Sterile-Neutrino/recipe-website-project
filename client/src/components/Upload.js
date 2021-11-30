@@ -9,7 +9,7 @@ function SelectionBar(props) {
             <div className="SelectionBar-inner">
             <h2>New Recipe</h2>
                 <input id="input-title" className="Upload-recipe" type="text" maxLength={50} placeholder="Recipe Title"></input>
-                <input id="input-description" className="Upload-recipe" type="textarea" maxLength={400} placeholder="Description"></input>
+                <input id="input-description" className="Upload-recipe" type="textarea" maxLength={1000} placeholder="Description"></input>
                 <input id="input-calories" className="Upload-recipe" type="text" maxLength={6} placeholder="Calories"></input>
                 <input id="input-ingredient" className="Upload-recipe" type="textarea" maxLength={200} placeholder="Ingredient"></input>
 
