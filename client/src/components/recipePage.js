@@ -3,31 +3,31 @@ import axios from 'axios'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./recipePage.css"
 
-function RecipeName (){
+function RecipeName (name){
     return (
         <div className="recipeNameBlock">
             <h1 className="recipe_name">
-                Roasted Chicken
+                {name}
             </h1>
         </div>
     );
 }
-function RecipeDescription() {
+function RecipeDescription(description) {
 
     return (
       <div className="descriptionBlock">
         <h1 className="description_content">
-        Roast chicken is chicken prepared as food by roasting whether in a home kitchen, over a fire, or with a rotisserie (rotary spit). Generally, the chicken is roasted with its own fat and juices by circulating the meat during roasting, and therefore, are usually cooked exposed to fire or heat with some type of rotary grill so that the circulation of these fats and juices is as efficient as possible. Roast chicken is a dish that appears in a wide variety of cuisines worldwide.
+        {description}
         </h1>
       </div>
     );
 }
-function RecipeCalories() {
+function RecipeCalories(calories) {
 
     return (
       <div className="caloriesBlock">
         <h1 className="recipe_calories">
-        142 calories
+        {calories}
         </h1>
       </div>
     );
@@ -36,7 +36,7 @@ function RecipePicture() {
 
     return (
       <div className="picture">
-        <img src="./images/sample.jpg" alt=""/>
+        <img src="/recipes/display/kung-pao-chicken.jpeg" alt=""/>
       </div>
     );
 }
@@ -67,26 +67,43 @@ function Favorite(){
 function AddtoFavorite(){
   ;
 }
+
 class recipePage extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
+        this.state = {
+          title:'',//gets a list of recipes
+          description:''
+        };
     }
 
-    
+    componentDidMount = ()=>{
+      this.getRecipe();
+    }
+
+    getRecipe=()=>{
+      var self=this;
+      axios.get(`http://localhost:4000/recipes/61a4a21083e49fbd03fefcb8`)
+        .then((response)=>{
+          self.setState({title:response.data.title})
+          self.setState({description:response.data.description})
+          self.setState({calories:response.data.calories})
+          console.log(response.data);
+        })
+    }
 
     render() {
       return (
         
         <div>
-          <div className="RecipeName">
-            <RecipeName/>
+          <div className="RecipeName"> 
+            {RecipeName(this.state.title)}
           </div>
           <div className="RecipeDescription">
-            <RecipeDescription/>
+            {RecipeDescription(this.state.description)}
           </div>
-
           <div className="RecipeCalories">
-            <RecipeCalories/>
+           {RecipeCalories(this.state.calories)}
           </div>
           <div className="RecipePicture">
             <RecipePicture/>
@@ -102,5 +119,8 @@ class recipePage extends React.Component {
     }
 
 }
+/*
+
+*/
 
 export default recipePage;
