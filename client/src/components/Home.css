@@ -205,3 +205,18 @@
     position: relative;
     text-align: center;
 }
+.Logout button{
+    left:120px;
+    top:120px;
+    position:absolute;
+    height:40px;
+    width: 240px;
+    background-color:lemonchiffon;
+    padding: 4px 0;
+    border-radius: 3px;
+    font-family: 'Roboto'; 
+	text-align: center;
+  	text-transform: uppercase;
+    color:black;
+    user-select: none;
+}
