@@ -27,7 +27,7 @@ function RecipeDescription(description,ingredient) {
     return (
       <div className="descriptionBlock">
         <h1 className="ingredient_content">
-          ingredients: {ingredient} 
+          Ingredients: {ingredient} 
         </h1>
         <p className="description_content">
           {description}
@@ -123,7 +123,7 @@ class recipePage extends React.Component {
           recipeId: id
         };
         axios.post(`/users/like`, data);
-        axios.post(`/recipes/like`, data);
+        axios.post(`/recipes/like`,data)
       }
       else if (this.state.liked==true){ //click to dislike
         this.setState({liked:false});
@@ -136,7 +136,7 @@ class recipePage extends React.Component {
           recipeId: id
         };
         axios.post(`/users/dislike`, data);
-        axios.post(`/recipes/dislike`, data);
+        axios.post(`/recipes/dislike`,data);
       }
     }
     AddtoFavorite(){
