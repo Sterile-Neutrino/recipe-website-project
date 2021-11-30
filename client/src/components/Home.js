@@ -3,6 +3,7 @@
 import React, {useDebugValue, useState} from 'react';
 import axios from "axios";
 import "./Home.css";
+import recipePage from "./recipePage"
 import range from "lodash/range";
 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
@@ -74,6 +75,7 @@ class Recommendation extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
+          id: "",
           title: '',
           desciption: '',
 
@@ -83,10 +85,11 @@ class Recommendation extends React.Component {
 
 componentDidMount = () => {  
   var self = this;
-  axios.get('/recipes/61a4a21083e49fbd03fefcb8')
+  axios.get('/recipes/61a588e7de7ab6c1924f69a1')
   .then(function (response) {
-    console.log(response.data);
-    self.setState({title: response.data.title, 
+    self.setState({
+      id: response.data._id,
+      title: response.data.title, 
       desciption: response.data.description})
   });
 }
@@ -94,16 +97,19 @@ componentDidMount = () => {
   render() {
       return (
         <div>
-          <Link component={Link} to="/RecipePage" className="RecommendationBlock">
-          <h1 className="RecommendationTitle" componentDidMount>
-            {this.state.title}
-          </h1>
-          <h2 className="RecommendationContent">
-            {this.state.desciption.slice(0,200) + "..."}
-          </h2>
-          <div className="RecommendationThumbnail">
-            <img src='http://localhost:4000/recipes/recipeImage/61a588e7de7ab6c1924f69a1' alt=""/>
-          </div>
+          <Link to={{
+              pathname: `/RecipePage/61a588e7de7ab6c1924f69a1`,
+            }} component={recipePage} className="RecommendationBlock">
+            <h1 className="RecommendationTitle" componentDidMount>
+              {this.state.title}
+            </h1>
+            <h2 className="RecommendationContent">
+              {this.state.desciption.slice(0,180) + "..."}
+            </h2>
+            <div className="RecommendationThumbnail">
+              <img src='http://localhost:4000/recipes/recipeImage/61a588e7de7ab6c1924f69a1' alt=""/>
+            </div>
+          {/* </Link> */}
           </Link>
         </div>
 
