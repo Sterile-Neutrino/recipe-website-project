@@ -124,7 +124,7 @@ router.get('/image/:imageId', (req, res) => {
 });
 
 // Get an image by the id of its associated recipe. For example, the following
-//url directs to the image that belongs to recipe 000000000000000000000000:
+// url directs to the image that belongs to recipe 000000000000000000000000:
 // http://localhost:4000/recipes/image/000000000000000000000000
 router.get('/recipeImage/:recipeId', async (req, res) => {
   var recipeId = mongoose.Types.ObjectId(req.params.recipeId);
@@ -157,7 +157,7 @@ router.get('/recipeImage/:recipeId', async (req, res) => {
   }
 });
 
-//Get all image data
+// Get all image data
 router.get('/getImages', (req, res) => {
   var bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
     bucketName: 'image',
@@ -181,7 +181,7 @@ router.get('/getImages', (req, res) => {
   });
 });
 
-//Get a recipe in json format by id
+// Get a recipe in json format by id
 router.get('/:postID', async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.postID);
@@ -191,4 +191,72 @@ router.get('/:postID', async (req, res) => {
   }
 })
 
+// Return an array of words from the input string, using non-alphanumeric
+// characters as separators.
+function parse(s) {
+  return s.split(/[\W_]+/);
+}
+
+// Return an array of key words of a recipe object for search.
+function keyWords(recipe) {
+  var result = [];
+  var uniqueResult = [];
+  if (recipe instanceof Recipe) {
+    result = result.concat(parse(recipe.author));
+    result = result.concat(parse(recipe.title));
+    result = result.concat(parse(recipe.description));
+    result = result.concat(parse(recipe.calories));
+    result = result.concat(parse(recipe.ingredients));
+    result = result.concat(parse(recipe.category));
+  }
+  // Remove duplicates
+  for (let i = 0; i < result.length; i++) {
+    var currentWord = result[i];
+    if (result.indexOf(currentWord) === i) {
+      uniqueResult.push(currentWord);
+    }
+  }
+  return uniqueResult;
+}
+
+// Search recipes and get results that are related. The content from search
+// bar should be a string in req.body
+router.get('/search', async (req, res) => {
+  var searchInput = [];
+  var recipeArray = [];
+  var resultSet = set();
+  var resultIdList = [];
+  try {
+    // Parse the search input into words
+    searchInput = parse(req.body);
+    recipeArray = Recipe.find().toArray();
+    for (let recipe in recipeArray) {
+      if (!resultSet.has(recipe)) {
+        var recipeKeyWords = keyWords(recipe);
+        for (let key in searchInput) {
+          if (recipeKeyWords.includes(key)) {
+            resultSet.add(recipe);
+            break;
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(null);
+  }
+  if (resultSet.size !== 0) {
+    for (let recipe in resultSet) {
+      resultIdList.push(recipe._id.toString());
+    }
+    // Return a list of recipe Ids
+    res.json(resultIdList);
+    console.log('Search results returned');
+  } else {
+    res.send(null);
+    console.log('No result found');
+  }
+})
+
+exports.model = Recipe;
 exports.router = router;
