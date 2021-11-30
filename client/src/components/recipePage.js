@@ -119,30 +119,44 @@ class recipePage extends React.Component {
         let id = this.state.id
         let user = this.state.user
         var data={
-          userId: {user},
-          recipeId: {id}
+          userId: user,
+          recipeId: id
         };
-        axios.post(`users/like`, data);
+        axios.post(`/users/like`, data);
       }
       else if (this.state.liked==true){ //click to dislike
         this.setState({liked:false});
         const likes=this.state.likes;
         this.setState({likes:likes-1});
+        let id = this.state.id
+        let user = this.state.user
+        var data={
+          userId: user,
+          recipeId: id
+        };
+        axios.post(`/users/dislike`, data);
       }
     }
     AddtoFavorite(){
       if (this.state.added==false){ //click to add
         this.setState({added:true});
-        //let id = this.state.id
-        //let user = this.state.user
+        let id = this.state.id
+        let user = this.state.user
         var data={
-          userId: '61a588bbde7ab6c1924f6998',
-          recipeId: '61a5f57bbd14dc54b5f54b85'
+          userId: user,
+          recipeId: id
         };
-        axios.post('users/addToList',data);
+        axios.post('/users/addToList',data);
       }
       else if (this.state.added==true){ //click to remove from list
         this.setState({added:false});
+        let id = this.state.id
+        let user = this.state.user
+        var data={
+          userId: user,
+          recipeId: id
+        };
+        axios.post('/users/remove',data);
       }
     }
     render() {
