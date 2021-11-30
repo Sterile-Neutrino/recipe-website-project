@@ -91,7 +91,7 @@ router.post('/upload', aSyncUpload, async (req, res) => {
     });
     await newRecipe.save()
     .then(doc => {
-      res.append('message', title + ' uploaded successfully');
+      res.append('message', _title + ' uploaded successfully');
       res.send(true);
       console.log('Upload succeeded');
     })
@@ -107,7 +107,7 @@ router.post('/upload', aSyncUpload, async (req, res) => {
   var query = { author: _author, title: _title, calories: _calories}
   try {
     uploadedRecipeId = await Recipe.findOne(query)._id
-    console.log(_id)
+    //console.log(_id)
     await User.updateOne(
       { username: _author },
       { $push: { uploadList: uploadedRecipeId }}
