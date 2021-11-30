@@ -105,7 +105,7 @@ router.post('/upload', aSyncUpload, async (req, res) => {
 // directs to the image whose objectId is 000000000000000000000000:
 // http://localhost:4000/recipes/image/000000000000000000000000
 router.get('/image/:imageId', (req, res) => {
-  imageId = mongoose.Types.ObjectId(req.params.imageId);
+  var imageId = mongoose.Types.ObjectId(req.params.imageId);
   var bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
     bucketName: 'image',
   });
@@ -121,6 +121,37 @@ router.get('/image/:imageId', (req, res) => {
       bucket.openDownloadStream(imageId).pipe(res);
     }
   });
+});
+
+router.get('/recipeImage/:recipeId', async (req, res) => {
+  var recipeId = mongoose.Types.ObjectId(req.params.recipeId);
+  var imageId = null;
+  try {
+    var recipe = await Recipe.findById(recipeId);
+    imageId = mongoose.Types.ObjectId(recipe.imageId);
+  } catch (err) {
+    console.log('Recipe not found');
+    res.status(404).send('Recipe not found');
+  }
+  if (imageId) {
+    var bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+      bucketName: 'image',
+    });
+    bucket
+    .find({
+      _id: imageId
+    })
+    .toArray((err, files) => {
+      if (err) {
+        console.log(err);
+      } else if (!files || files.length === 0) {
+        console.log('Image not found');
+        res.status(404).send('Image not found');
+      } else {
+        bucket.openDownloadStream(imageId).pipe(res);
+      }
+    });
+  }
 });
 
 //Get all image data
@@ -146,5 +177,15 @@ router.get('/getImages', (req, res) => {
     }
   });
 });
+
+//Get a recipe in json format by id
+router.get('/:postID', async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.postID);
+    res.json(recipe);
+  } catch (err) {
+    res.json({ message: err });
+  }
+})
 
 exports.router = router;
