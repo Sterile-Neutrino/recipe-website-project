@@ -22,6 +22,9 @@ const recipesSchema = new mongoose.Schema({
 // Mongoose model for recipes
 const Recipe = mongoose.model('recipes', recipesSchema);
 
+// Mongoose model for users
+const User = mongoose.model('users');
+
 var storage = new GridFsStorage({
   db: mongoose.connection,
   options: {
@@ -69,26 +72,26 @@ router.post('/upload', aSyncUpload, async (req, res) => {
     res.append('message', req.fileValidationError);
     res.send(false);
   } else {
-    var author = req.body.author;
-    var title = req.body.title;
-    var calories = req.body.calories;
-    var ingredient = req.body.ingredient;
-    var description = req.body.description;
-    var category = req.body.category;
-    var imageId = req.file.id.toString();
+    var _author = req.body.author;
+    var _title = req.body.title;
+    var _calories = req.body.calories;
+    var _ingredient = req.body.ingredient;
+    var _description = req.body.description;
+    var _category = req.body.category;
+    var _imageId = req.file.id.toString();
     const newRecipe = new Recipe({
-      author: author,
-      title: title,
-      description: description,
-      calories: calories,
-      ingredients: ingredient,
-      category: category,
-      imageId: imageId,
+      author: _author,
+      title: _title,
+      description: _description,
+      calories: _calories,
+      ingredients: _ingredient,
+      category: _category,
+      imageId: _imageId,
       likes: 0
     });
     await newRecipe.save()
     .then(doc => {
-      res.append('message', title + ' uploaded successfully');
+      res.append('message', _title + ' uploaded successfully');
       res.send(true);
       console.log('Upload succeeded');
     })
@@ -98,6 +101,19 @@ router.post('/upload', aSyncUpload, async (req, res) => {
       console.log(err);
       console.log('Upload failed');
     });
+  }
+  // add the id of the uploaded recipe to associated user's uploaded list
+  // find by matching author, title, and calories
+  var query = { author: _author, title: _title, calories: _calories}
+  try {
+    uploadedRecipeId = await Recipe.findOne(query)._id
+    //console.log(_id)
+    await User.updateOne(
+      { username: _author },
+      { $push: { uploadList: uploadedRecipeId }}
+    )
+  } catch (err) {
+    console.log(err)
   }
 });
 

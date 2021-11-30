@@ -14,7 +14,7 @@ class LoginForm extends React.Component{
             username: "",
             password: "",
             redirect: null,
-            logged: false
+            
 
         };
         /// Setting up functions - set 'this' context to this class
@@ -71,18 +71,21 @@ class LoginForm extends React.Component{
     // Code modified by Jiayue for testing
     axios
       .post("/users/login", LoginData)
-      .then((res) => {
+      .then((response) => {
         // only remove if complete successfully
-        if (res.data) {
-            let info = res.data.username;
+        if (response.data) {
+            console.log(response.data._id);
+            let info = response.data._id;
             localStorage.setItem('userInfo', JSON.stringify(info));
+            this.setState({ redirect: "/Home" });
         } else {
             alert('Username and password do not match');
+            this.setState({ redirect: "/" });
         }
-        console.log(res.data);
+        console.log(response.data);
         this.setState({ username: "", password: "" });
-        this.setState({ redirect: "/Home" });
-        this.setState({ logged: true });
+       
+        
       })
       .catch((err) => {
         // if error, notify user

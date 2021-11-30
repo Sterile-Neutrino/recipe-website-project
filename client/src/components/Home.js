@@ -68,6 +68,7 @@ function UploadRecipe() {
 
 function Logout() {
       localStorage.clear();
+      console.log("Sign Out");
 }
 
 class Recommendation extends React.Component {
