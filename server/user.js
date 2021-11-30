@@ -109,6 +109,7 @@ router.post('/SignUp', async (req, res) => {
   await newUser.save()
   .then(doc => {
     res.append('message', username + ' signed up successfully');
+    res.append('userId', doc._id.toString());
     res.send(true);
     console.log('signup succeeded');
   })
@@ -139,5 +140,5 @@ router.post('/login', async (req, res) => {
   });
 });
 
-
+exports.model = User;
 exports.router = router;

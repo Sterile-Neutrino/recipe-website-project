@@ -102,7 +102,7 @@ componentDidMount = () => {
             {this.state.desciption.slice(0,200) + "..."}
           </h2>
           <div className="RecommendationThumbnail">
-            <img src='http://localhost:4000/recipes/image/61a4a21083e49fbd03fefcb8' alt=""/>
+            <img src='http://localhost:4000/recipes/recipeImage/61a588e7de7ab6c1924f69a1' alt=""/>
           </div>
           </Link>
         </div>
