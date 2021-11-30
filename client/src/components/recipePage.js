@@ -36,22 +36,9 @@ function RecipePicture() {
 
     return (
       <div className="picture">
-        <img src="/recipes/image/61a4a21083e49fbd03fefcb8" alt=""/>
+        <img src="/recipes/recipeImage/61a588e7de7ab6c1924f69a1" alt=""/>
       </div>
     );
-}
-
-function Like(){
-  return(
-    <div className="LikeButton">
-      <button onClick={likeit}>
-        Like this recipe 👍🏻
-      </button>
-    </div>
-  );
-}
-function likeit(){
-  ;
 }
 
 function Favorite(){
@@ -73,23 +60,46 @@ class recipePage extends React.Component {
         super(props)
         this.state = {
           title:'',//gets a list of recipes
-          description:''
+          description:'',
+          likes:0,
+          userlikelist:[]
         };
+        this.Likeit = this.Likeit.bind(this);
     }
 
     componentDidMount = ()=>{
       this.getRecipe();
+      //this.getUser();
+    }
+    
+    getUser=()=>{
+      var self=this;
+      let user = localStorage.getItem('userInfo')
+      console.log(user);
+      axios.get(`http://localhost:4000/users/${user}`)
+        .then((response)=>{
+          self.setState({userlikelist:response.data.likeList})
+          console.log(response.data);
+        })
     }
 
     getRecipe=()=>{
       var self=this;
-      axios.get(`http://localhost:4000/recipes/61a4a21083e49fbd03fefcb8`)
+      axios.get(`http://localhost:4000/recipes/61a588e7de7ab6c1924f69a1`)
         .then((response)=>{
           self.setState({title:response.data.title})
           self.setState({description:response.data.description})
           self.setState({calories:response.data.calories})
+          self.setState({likes:response.data.likes})
           console.log(response.data);
         })
+    }
+
+    Likeit(){
+      const likes=this.state.likes;
+      this.setState({ likes: likes + 1 });
+      axios.patch(`http://localhost:4000/recipes/61a588e7de7ab6c1924f69a1`, { "likes": this.state.likes });
+      console.log(this.state.likes);
     }
 
     render() {
@@ -108,8 +118,10 @@ class recipePage extends React.Component {
           <div className="RecipePicture">
             <RecipePicture/>
           </div>
-          <div className="Like">
-            <Like/>
+          <div className="LikeButton">
+            <button onClick={this.Likeit}>
+               Like this recipe: {this.state.likes}  👍🏻
+            </button>
           </div>
           <div className="Favorite">
             <Favorite/>
