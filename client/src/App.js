@@ -45,9 +45,6 @@ function App() {
             Register
           </Link>
 
-          <Link to="/RecipePage" className="RecipePage">
-            Recipe Page</Link>
-
         </nav>
        
          <Routes>
@@ -55,7 +52,7 @@ function App() {
           <Route exact path="/LoginForm" exact element={<LoginForm/>}/>
           <Route exact path="/Mylist" exact element={<Mylist/>}/>
           <Route exact path="/Home" exact element={<Home/>}/>
-          <Route exact path="/RecipePage" exact element={<RecipePage/>}/>
+          <Route exact path="/RecipePage/:id" element={<RecipePage/>} /> 
           <Route exact path="/Upload" exact element={<Upload/>}/>
           
 
@@ -69,4 +66,6 @@ function App() {
 
   );
 }
+
+
 export default App;
