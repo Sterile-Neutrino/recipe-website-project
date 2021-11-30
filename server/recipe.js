@@ -72,26 +72,26 @@ router.post('/upload', aSyncUpload, async (req, res) => {
     res.append('message', req.fileValidationError);
     res.send(false);
   } else {
-    var _author = req.body.author;
-    var _title = req.body.title;
-    var _calories = req.body.calories;
-    var _ingredient = req.body.ingredient;
-    var _description = req.body.description;
-    var _category = req.body.category;
-    var _imageId = req.file.id.toString();
+    var author = req.body.author;
+    var title = req.body.title;
+    var calories = req.body.calories;
+    var ingredient = req.body.ingredient;
+    var description = req.body.description;
+    var category = req.body.category;
+    var imageId = req.file.id.toString();
     const newRecipe = new Recipe({
-      author: _author,
-      title: _title,
-      description: _description,
-      calories: _calories,
-      ingredients: _ingredient,
-      category: _category,
-      imageId: _imageId,
+      author: author,
+      title: title,
+      description: description,
+      calories: calories,
+      ingredients: ingredient,
+      category: category,
+      imageId: imageId,
       likes: 0
     });
     await newRecipe.save()
     .then(doc => {
-      res.append('message', _title + ' uploaded successfully');
+      res.append('message', title + ' uploaded successfully');
       res.send(true);
       console.log('Upload succeeded');
     })
@@ -104,12 +104,15 @@ router.post('/upload', aSyncUpload, async (req, res) => {
   }
   // add the id of the uploaded recipe to associated user's uploaded list
   // find by matching author, title, and calories
-  var query = { author: _author, title: _title, calories: _calories}
+  var query = { author: author, title: title, calories: calories}
+  var option = { "author": 0, "title": 0, "description": 0, "calories": 0, "ingredients": 0,
+                "category": 0, "likes": 0, "imageId": 0}
   try {
-    uploadedRecipeId = await Recipe.findOne(query)._id
-    //console.log(_id)
+    uploadedRecipeId = await Recipe.findOne(query, option);
+    
+    console.log(uploadedRecipeId)
     await User.updateOne(
-      { username: _author },
+      { _id: author },
       { $push: { uploadList: uploadedRecipeId }}
     )
   } catch (err) {
