@@ -12,13 +12,25 @@ function RecipeName (name){
         </div>
     );
 }
-function RecipeDescription(description) {
+function RecipeCategory (category){
+  return (
+      <div className="CategoryBlock">
+          <h1 className="category_content">
+              {category}
+          </h1>
+      </div>
+  );
+}
+function RecipeDescription(description,ingredient) {
 
     return (
       <div className="descriptionBlock">
-        <h1 className="description_content">
-        {description}
+        <h1 className="ingredient_content">
+          ingredients: {ingredient} 
         </h1>
+        <p className="description_content">
+          {description}
+        </p>
       </div>
     );
 }
@@ -27,7 +39,7 @@ function RecipeCalories(calories) {
     return (
       <div className="caloriesBlock">
         <h1 className="recipe_calories">
-        {calories}
+          Calories: {calories}
         </h1>
       </div>
     );
@@ -41,20 +53,6 @@ function RecipePicture() {
     );
 }
 
-function Favorite(){
-  return(
-    <div className="FavoriteButton">
-      <button onClick={AddtoFavorite}>
-        Add to my list ⭐
-      </button>
-    </div>
-  );
-}
-
-function AddtoFavorite(){
-  ;
-}
-
 class recipePage extends React.Component {
     constructor(props) {
         super(props)
@@ -62,24 +60,32 @@ class recipePage extends React.Component {
           title:'',//gets a list of recipes
           description:'',
           likes:0,
-          userlikelist:[]
+          category:'',
+          ingredients:'',
+          liked:false,
+          added:false
         };
         this.Likeit = this.Likeit.bind(this);
+        this.AddtoFavorite=this.AddtoFavorite.bind(this);
     }
 
     componentDidMount = ()=>{
       this.getRecipe();
-      //this.getUser();
+      this.getUser();
     }
     
     getUser=()=>{
       var self=this;
-      let user = localStorage.getItem('userInfo')
-      console.log(user);
-      axios.get(`http://localhost:4000/users/${user}`)
+      let userid='61a588bbde7ab6c1924f6998';
+      axios.get(`http://localhost:4000/users/find/${userid}`)
         .then((response)=>{
-          self.setState({userlikelist:response.data.likeList})
-          console.log(response.data);
+          console.log(response.data.myList)//for debugging
+          if (response.data.likeList.includes('61a588e7de7ab6c1924f69a1')){
+            self.setState({liked:true});
+          };
+          if (response.data.myList.includes('61a588e7de7ab6c1924f69a1')){
+            self.setState({Added:true});
+          }
         })
     }
 
@@ -91,26 +97,58 @@ class recipePage extends React.Component {
           self.setState({description:response.data.description})
           self.setState({calories:response.data.calories})
           self.setState({likes:response.data.likes})
-          console.log(response.data);
+          self.setState({category:response.data.category})
+          self.setState({ingredients:response.data.ingredients})
+          console.log(response.data); //for debugging
         })
     }
 
     Likeit(){
-      const likes=this.state.likes;
-      this.setState({ likes: likes + 1 });
-      axios.patch(`http://localhost:4000/recipes/61a588e7de7ab6c1924f69a1`, { "likes": this.state.likes });
-      console.log(this.state.likes);
+      if (this.state.liked==false){ //click to like
+      
+        const likes=this.state.likes;
+        this.setState({ likes: likes + 1 });
+        this.setState({liked:true});
+        var data={
+          userId: '61a588bbde7ab6c1924f6998',
+          recipeId: '61a588e7de7ab6c1924f69a1'
+        };
+        axios.post(`users/like`, data);
+      }
+      else if (this.state.liked==true){ //click to dislike
+        this.setState({liked:false});
+        const likes=this.state.likes;
+        this.setState({likes:likes-1});
+      }
     }
-
+    AddtoFavorite(){
+      if (this.state.added==false){ //click to add
+        this.setState({added:true});
+        var data={
+          userId: '61a588bbde7ab6c1924f6998',
+          recipeId: '61a588e7de7ab6c1924f69a1'
+        };
+        axios.post('users/addToList',data);
+      }
+      else if (this.state.added==true){ //click to remove from list
+        this.setState({added:false});
+      }
+    }
     render() {
+      let like_button_name = this.state.liked ? "LikedButton" : "LikeButton";
+      let like_button_text=this.state.liked ? "Dislike " : "Like ";
+      let add_button_name = this.state.added ? "FavoritedButton" : "FavoriteButton";
+      let add_button_text=this.state.added ? "Remove from " : "Add to";
       return (
-        
         <div>
+          <div className="RecipeCategory">
+            {RecipeCategory(this.state.category)}
+          </div>
           <div className="RecipeName"> 
             {RecipeName(this.state.title)}
           </div>
           <div className="RecipeDescription">
-            {RecipeDescription(this.state.description)}
+            {RecipeDescription(this.state.description,this.state.ingredients)}
           </div>
           <div className="RecipeCalories">
            {RecipeCalories(this.state.calories)}
@@ -118,14 +156,12 @@ class recipePage extends React.Component {
           <div className="RecipePicture">
             <RecipePicture/>
           </div>
-          <div className="LikeButton">
-            <button onClick={this.Likeit}>
-               Like this recipe: {this.state.likes}  👍🏻
-            </button>
-          </div>
-          <div className="Favorite">
-            <Favorite/>
-          </div>
+          <button className = {like_button_name}  onClick={this.Likeit}>
+             {like_button_text}this recipe: {this.state.likes}  👍🏻
+          </button>
+          <button className = {add_button_name} onClick={this.AddtoFavorite}>
+             {add_button_text}my list ⭐
+          </button>
         </div>
       );
     }
