@@ -65,6 +65,10 @@ function UploadRecipe() {
 
 }
 
+function Logout() {
+      localStorage.clear();
+}
+
 class Recommendation extends React.Component {
 
     constructor(props) {
@@ -131,6 +135,11 @@ class Home extends React.Component {
 
           <div className="Recommendation">
             <Recommendation/>
+          </div>
+          <div className="Logout">
+          <button onClick={Logout}>
+             Logout
+         </button>
           </div>
         </div>
       );

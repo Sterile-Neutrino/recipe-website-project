@@ -7,11 +7,9 @@ const usersSchema = new mongoose.Schema({
   username: {type: String, unique: true},
   password: String,
   email: String,
-  //uploadList: [{type: mongoose.ObjectId, ref: 'Recipe'}],
-  //likeList: [{type: mongoose.ObjectId, ref: 'Recipe'}]
-  // modified by Ke Mi to test; used a different version of mongoose (5.0.15)
-  uploadList: [{type: mongoose.Schema.Types.ObjectId, ref: 'Recipe'}],
-  likeList: [{type: mongoose.Schema.Types.ObjectId, ref: 'Recipe'}]
+  uploadList: [String],
+  likeList: [String],
+  myList: [String]
   },{
   versionKey: false  // Get rid of __v when creating a document
 });
@@ -24,12 +22,76 @@ router.get('/getUsers', async (req, res) => {
   const users = await User.find();
   res.json(users);
   });
-  
-// Display all recipes at /getRecipes
-router.get('/getRecipes', async (req, res) => {
-  const recipes = await Recipe.find();
-  res.json(recipes);
-  });
+
+// Add recipe id to a user's like list
+router.post('/like', async (req, res) => {
+  var userId = mongoose.Types.ObjectId(req.body.userId);
+  var user = null;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    console.log(err);
+    console.log('An error occured when searching for user')
+  }
+  if (user) {
+    user.likeList.push(req.body.recipeId);
+    user.save()
+    .then(doc => {
+      res.send(true);
+      console.log('Recipe liked');
+    })
+    .catch(err => {
+      res.send(false);
+      console.log(err);
+    })
+  }
+});
+
+// Add recipe id to a user's my-list
+router.post('/addToList', async (req, res) => {
+  var userId = mongoose.Types.ObjectId(req.body.userId);
+  var user = null;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    console.log(err);
+    console.log('An error occured when searching for user')
+  }
+  if (user) {
+    user.myList.push(req.body.recipeId);
+    user.save()
+    .then(doc => {
+      res.send(true);
+      console.log('Recipe added to my list');
+    })
+    .catch(err => {
+      res.send(false);
+      console.log(err);
+    })
+  } else {
+    res.send(false);
+    console.log('Failed to add to my list');
+  }
+});
+
+// Get user json by userId
+router.get('/find/:userId', async (req, res) => {
+  var userId = mongoose.Types.ObjectId(req.params.userId);
+  var user = null;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    console.log(err);
+    console.log('An error occured when searching for user')
+  }
+  if (user) {
+    res.json(user);
+    console.log('Found user: ' + user.username);
+  } else {
+    res.json(null);
+    console.log('User not found');
+  }
+});
 
 // Create a user at /SignUp and append result message to header
 router.post('/SignUp', async (req, res) => {
@@ -41,7 +103,8 @@ router.post('/SignUp', async (req, res) => {
     password: password,
     email: email,
     uploadList: [],
-    likeList: []
+    likeList: [],
+    myList: []
   });
   await newUser.save()
   .then(doc => {
@@ -74,7 +137,7 @@ router.post('/login', async (req, res) => {
     }
     res.send(doc);
   });
-})
+});
 
 
 exports.router = router;

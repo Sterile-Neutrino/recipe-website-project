@@ -14,6 +14,7 @@ class LoginForm extends React.Component{
             username: "",
             password: "",
             redirect: null,
+            logged: false
 
         };
         /// Setting up functions - set 'this' context to this class
@@ -34,7 +35,7 @@ class LoginForm extends React.Component{
             password: event.target.value
         });
     }
-
+    
 
       //submit the data
     onSubmit(event){
@@ -47,6 +48,9 @@ class LoginForm extends React.Component{
             alert("Cannot be empty form!");
             return;
         }
+       
+
+   
     /* Tracy's original code
     axios
       .post("http://localhost:3000/users/login", LoginData)
@@ -70,7 +74,7 @@ class LoginForm extends React.Component{
       .then((res) => {
         // only remove if complete successfully
         if (res.data) {
-            let info = res.data;
+            let info = res.data.username;
             localStorage.setItem('userInfo', JSON.stringify(info));
         } else {
             alert('Username and password do not match');
@@ -78,10 +82,11 @@ class LoginForm extends React.Component{
         console.log(res.data);
         this.setState({ username: "", password: "" });
         this.setState({ redirect: "/Home" });
+        this.setState({ logged: true });
       })
       .catch((err) => {
         // if error, notify user
-        this.setState({ name: "", password: "" });
+        this.setState({ username: "", password: "" });
         alert("Error");
       });
 
