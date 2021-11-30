@@ -1,43 +1,25 @@
 import React, { useState } from "react";
 import "./SearchBar.css";
+import SearchResult from "./searchResult";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import axios from "axios";
 
 
 function SearchBar() {
 
-  const list=[
-    {id:1, datas: "abc"},
-    {id:1, datas: "abcde"},
-    {id:1, datas: "ccc"},
-    {id:1, datas: "fcc"},
-    {id:1, datas: "fff"},
-  ]
 
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
+  const [resultList, setResultList] = useState([]);
 
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
 
-    //axios.post("http://localhost:4000/recipe/search", searchWord)
-   // .then((res) => {
-      const newFilter = list.filter((value) => {
-        //get the title containnig this searchWord
-        return value.datas.includes(searchWord)//.title.toLowerCase().includes(searchWord.toLowerCase());
-     });
-  
-      if (searchWord === "") {
-        setFilteredData([]);
-      } else {
-        //Set up array of cooresponding titles
-        setFilteredData(newFilter);
-      }
-
-   // })  
   };
 
 
+// console.log(wordEntered)
 
   return (
     <div className="search">
@@ -50,22 +32,14 @@ function SearchBar() {
           onChange={handleFilter}
         />
         
-        <button className="button" type="button" >
-                        Search
-                    </button>
+        <Link to={{
+              pathname: `/search/${wordEntered}`,
+            }} component={SearchResult} className="button">
+            Search
+        </Link>
         
       </div>
-      {filteredData.length != 0 && (
-        <div className="dataResult">
-          {filteredData.slice(0, 15).map((value, key) => {
-            return (
-              <Link component={Link} to="/RecipePage" className="dataItem"  target="_blank">
-                <p>{value.datas} </p>
-              </Link>
-            );
-          })}
-        </div>
-      )}
+
     </div>
   );
 }

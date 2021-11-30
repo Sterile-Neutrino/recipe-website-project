@@ -12,6 +12,7 @@ import Mylist from "./components/Mylist.js";
 import RecipePage from "./components/recipePage";
 import Upload from "./components/Upload.js";
 import SearchBar from "./components/SearchBar";
+import SearchResult from "./components/searchResult"
 axios.defaults.withCredentials = true;
 
 
@@ -56,6 +57,7 @@ function App() {
           <Route exact path="/Mylist" exact element={<Mylist/>}/>
           <Route exact path="/Home" exact element={<Home/>}/>
           <Route exact path="/RecipePage/:id" element={<RecipePage/>} /> 
+          <Route exact path="/search/:s" element={<SearchResult/>} /> 
           <Route exact path="/Upload" exact element={<Upload/>}/>
           
 
