@@ -156,7 +156,7 @@ class recipePage extends React.Component {
           userId: user,
           recipeId: id
         };
-        axios.post(`localhost:4000/users/removeFromList`,data);
+        axios.post(`/users/removeFromList`,data);
       }
     }
     render() {
