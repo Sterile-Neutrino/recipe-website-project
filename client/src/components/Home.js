@@ -81,7 +81,6 @@ class DailyList extends React.Component {
   }
 
   render() {
-    // console.log(this.titles)
       return (
         <div>
           <h1 className="Title">
