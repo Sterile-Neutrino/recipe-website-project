@@ -103,21 +103,43 @@ router.post('/upload', aSyncUpload, async (req, res) => {
     });
   }
   // add the id of the uploaded recipe to associated user's uploaded list
-  // find by matching author, title, and calories
-  var query = { author: author, title: title, calories: calories}
+  // find by matching author, title, calories, and category
+  var query = { author: author, title: title, calories: calories, category: category}
+  // return only the objectId
   var option = { "author": 0, "title": 0, "description": 0, "calories": 0, "ingredients": 0,
                 "category": 0, "likes": 0, "imageId": 0}
+  var uploadedRecipe = null;
   try {
-    uploadedRecipeId = await Recipe.findOne(query, option);
-    
-    console.log(uploadedRecipeId)
-    await User.updateOne(
-      { _id: author },
-      { $push: { uploadList: uploadedRecipeId }}
-    )
+    uploadedRecipe = await Recipe.findOne(query, option);
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
+  if (uploadedRecipe) {
+    var uploadedRecipeId = uploadedRecipe._id.toString();
+  } else {
+    console.log ('Error: Cannot find matching recipe')
+  }
+  
+  var contributor = null;
+  var contributorId = mongoose.Types.ObjectId(author);
+  try {
+    contributor = await User.findById(contributorId);
+  } catch (err) {
+    console.log(err);
+    console.log('An error occured when searching for user')
+  }
+  if (contributor) {
+    var username = contributor.username;
+    contributor.uploadList.push(uploadedRecipeId);
+    contributor.save()
+    .then(doc => {
+      console.log('Added ' + title + 'to ' + username + '\'s uploadedList')
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+  
 });
 
 
@@ -211,6 +233,54 @@ router.get('/:postID', async (req, res) => {
     res.json({ message: err });
   }
 })
+
+// increment the likes count of a recipe by 1
+router.post('/like', async (req, res) => {
+  var recipeId = mongoose.Types.ObjectId(req.body.recipeId);
+  var recipe = null;
+  try {
+    recipe = await Recipe.findById(recipeId);
+  } catch (err) {
+    console.log(err);
+    console.log('An error occured when searching for recipe')
+  }
+  if (recipe) {
+    recipe.likes = recipe.likes + 1;
+    recipe.save()
+    .then(doc => {
+      res.send(true);
+      console.log('Recipe likes count incremented');
+    })
+    .catch(err => {
+      res.send(false);
+      console.log(err);
+    })
+  }
+});
+
+// decrement the likes count of a recipe by 1
+router.post('/dislike', async (req, res) => {
+  var recipeId = mongoose.Types.ObjectId(req.body.recipeId);
+  var recipe = null;
+  try {
+    recipe = await Recipe.findById(recipeId);
+  } catch (err) {
+    console.log(err);
+    console.log('An error occured when searching for recipe')
+  }
+  if (recipe) {
+    recipe.likes = recipe.likes - 1;
+    recipe.save()
+    .then(doc => {
+      res.send(true);
+      console.log('Recipe likes count decremented');
+    })
+    .catch(err => {
+      res.send(false);
+      console.log(err);
+    })
+  }
+});
 
 // Return an array of words from the input string, using non-alphanumeric
 // characters as separators.

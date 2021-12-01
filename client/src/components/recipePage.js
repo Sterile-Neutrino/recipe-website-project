@@ -27,7 +27,7 @@ function RecipeDescription(description,ingredient) {
     return (
       <div className="descriptionBlock">
         <h1 className="ingredient_content">
-          ingredients: {ingredient} 
+          Ingredients: {ingredient} 
         </h1>
         <p className="description_content">
           {description}
@@ -75,10 +75,10 @@ class recipePage extends React.Component {
     componentDidMount = ()=>{
       const id = this.props.params.id;//.toString();
       this.getRecipe(id);
-      this.getUser();
+      this.getUser(id);
     }
     
-    getUser=()=>{
+    getUser=(id)=>{
       var self=this;
       let userid=localStorage.getItem('userInfo');
       userid=JSON.parse(userid);
@@ -86,11 +86,11 @@ class recipePage extends React.Component {
       axios.get(`http://localhost:4000/users/find/${userid}`)
         .then((response)=>{
           console.log(response.data)//for debugging
-          if (response.data.likeList.includes('61a588e7de7ab6c1924f69a1')){
+          if (response.data.likeList.includes(id)){
             self.setState({liked:true});
             console.log(response.data.likeList)
           };
-          if (response.data.myList.includes('61a588e7de7ab6c1924f69a1')){
+          if (response.data.myList.includes(id)){
             self.setState({added:true});
           }
         })
@@ -123,6 +123,7 @@ class recipePage extends React.Component {
           recipeId: id
         };
         axios.post(`/users/like`, data);
+        axios.post(`/recipes/like`,data)
       }
       else if (this.state.liked==true){ //click to dislike
         this.setState({liked:false});
@@ -135,6 +136,7 @@ class recipePage extends React.Component {
           recipeId: id
         };
         axios.post(`/users/dislike`, data);
+        axios.post(`/recipes/dislike`,data);
       }
     }
 
@@ -148,7 +150,7 @@ class recipePage extends React.Component {
           userId: user,
           recipeId: id
         };
-        axios.post('/users/addToList',data);
+        axios.post(`/users/addToList`,data);
       }
       else if (this.state.added==true){ //click to remove from list
         this.setState({added:false});
@@ -158,14 +160,14 @@ class recipePage extends React.Component {
           userId: user,
           recipeId: id
         };
-        axios.post('/users/remove',data);
+        axios.post(`/users/removeFromList`,data);
       }
     }
 
     
     render() {
       let like_button_name = this.state.liked ? "LikedButton" : "LikeButton";
-      let like_button_text=this.state.liked ? "Dislike " : "Like ";
+      let like_button_text=this.state.liked ? "Liked " : "Like ";
       let add_button_name = this.state.added ? "FavoritedButton" : "FavoriteButton";
       let add_button_text=this.state.added ? "Remove from " : "Add to";
       return (

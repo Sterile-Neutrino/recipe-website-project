@@ -47,35 +47,8 @@ router.post('/like', async (req, res) => {
   }
 });
 
-// Remove recipe id from a user's like list
-router.post('/dislike', async (req, res) => {
-  var userId = mongoose.Types.ObjectId(req.body.userId);
-  var user = null;
-  try {
-    user = await User.findById(userId);
-  } catch (err) {
-    console.log(err);
-    console.log('An error occured when searching for user')
-  }
-  if (user) {
-    user.likeList.remove(req.body.recipeId);
-    user.save()
-    .then(doc => {
-      res.send(true);
-      console.log('Recipe Disliked');
-    })
-    .catch(err => {
-      res.send(false);
-      console.log(err);
-    })
-  }
-});
-
 // Add recipe id to a user's my-list
 router.post('/addToList', async (req, res) => {
-  console.log('Recipe added to my list');
-
-
   var userId = mongoose.Types.ObjectId(req.body.userId);
   var user = null;
   try {
@@ -101,8 +74,8 @@ router.post('/addToList', async (req, res) => {
   }
 });
 
-// Remove recipe id from a user's my list
-router.post('/remove', async (req, res) => {
+// Remove recipe id from a user's like list
+router.post('/dislike', async (req, res) => {
   var userId = mongoose.Types.ObjectId(req.body.userId);
   var user = null;
   try {
@@ -112,16 +85,58 @@ router.post('/remove', async (req, res) => {
     console.log('An error occured when searching for user')
   }
   if (user) {
-    user.myList.remove(req.body.recipeId);
-    user.save()
-    .then(doc => {
-      res.send(true);
-      console.log('Recipe Removed');
-    })
-    .catch(err => {
+    const index = user.likeList.indexOf(req.body.recipeId);
+    if (index > -1) {
+      user.likeList.splice(index, 1);
+      user.save()
+      .then(doc => {
+        res.send(true);
+        console.log('Recipe Disliked');
+      })
+      .catch(err => {
+        res.send(false);
+        console.log(err);
+      })
+    } else {
       res.send(false);
-      console.log(err);
-    })
+      console.log('Failed to dislike: recipe not in like list')
+    }
+  } else {
+    res.send(false);
+    console.log('Failed to dislike: user not found');
+  }
+});
+
+// Remove recipe id from a user's my list
+router.post('/removeFromList', async (req, res) => {
+  var userId = mongoose.Types.ObjectId(req.body.userId);
+  var user = null;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    console.log(err);
+    console.log('An error occured when searching for user')
+  }
+  if (user) {
+    const index = user.myList.indexOf(req.body.recipeId);
+    if (index > -1) {
+      user.myList.splice(index, 1);
+      user.save()
+      .then(doc => {
+        res.send(true);
+        console.log('Recipe removed from my list');
+      })
+      .catch(err => {
+        res.send(false);
+        console.log(err);
+      })
+    } else {
+      res.send(false);
+      console.log('Failed to remove from list: recipe not in list')
+    }
+  } else {
+    res.send(false);
+    console.log('Failed to remove from list: user not found');
   }
 });
 

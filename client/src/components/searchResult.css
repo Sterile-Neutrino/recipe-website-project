@@ -1,0 +1,73 @@
+.DailyList{
+    position: relative;
+    left: 100px;
+    display: flex;
+}
+
+.RecipeItem {
+    display: absolute;
+    text-align: center;
+    line-height: 40px;
+    height: 40px;
+    background-color: lemonchiffon;
+}
+
+.RecipeItem:hover {
+    display: absolute;
+    text-align: center;
+    line-height: 40px;
+    height: 40px;
+    background-color: white;
+}
+
+.RecipeTitle {
+    /* right: 150px;
+    top: 250px; */
+    position: relative;
+    color: orange;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 25px;
+}
+
+.Title {
+    z-index: 1;
+    left: -720px;
+    top: -270px;
+    position: absolute;
+    color: red;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+}
+
+.List {
+    width: 50%;
+  }
+
+
+.BasicList {
+    box-shadow: 5px 10px 20px black;
+    border-radius: 15px;
+    position: fixed;
+    left: 100px;
+    top: 250px;
+    height: 500px;
+    width: 400px;
+    overflow-y: auto;
+  }
+
+.Recipe{
+    color: black;
+    background: #fff;
+    border: 1px  #999;
+    float: left;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 34px;
+    height: 34px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 100px;
+}
