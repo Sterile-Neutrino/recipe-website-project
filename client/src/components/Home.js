@@ -10,11 +10,6 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Upload from './Upload';
 
 
-const recipeList = ["Chicken Sandwitch", "Fried Rice", "Spaghetti with Italian Meatball"];
-
-
-
-
 function RecipeItem (item) {
     
   const recipeID = item.item;
@@ -42,7 +37,7 @@ class DailyList extends React.Component {
     this.state = {
         // listID: [],
         listID: [],
-        listTitle: new Object(),
+        listTitle: new Object()
         // listItem: {id: [], title: []}
 
     };
@@ -57,7 +52,6 @@ class DailyList extends React.Component {
     axios.get('http://localhost:4000/recipes//sortByLikes/list')
     .then((response)=>{
     //   this.SearchResult = response.data;
-    console.log(response.data)
       this.setState({listID: response.data})
     //   console.log(this.SearchResult); //for debugging
 
@@ -99,7 +93,7 @@ class DailyList extends React.Component {
   render() {
       return (
         <div>
-          <h1 className="Title">
+          <h1 className="ListTitle">
             What's popular today?
           </h1>
               <div className="BasicList">
@@ -166,7 +160,7 @@ componentDidMount = () => {
       return (
         <div>
           <Link to={{
-              pathname: `/RecipePage/61a5f57bbd14dc54b5f54b85`, //test for dynamic route: path id
+              pathname: `/RecipePage/61a588e7de7ab6c1924f69a1`, //test for dynamic route: path id
             }} component={recipePage} className="RecommendationBlock">
             <h1 className="RecommendationTitle" componentDidMount>
               {this.state.title}

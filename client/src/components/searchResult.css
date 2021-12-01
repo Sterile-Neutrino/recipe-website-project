@@ -45,14 +45,15 @@
   }
 
 
-.BasicList {
+.ResultList {
     box-shadow: 5px 10px 20px black;
     border-radius: 15px;
-    position: fixed;
-    left: 100px;
-    top: 250px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
     height: 500px;
-    width: 400px;
+    width: 1000px;
+    transform: translate(-50%, -50%);
     overflow-y: auto;
   }
 

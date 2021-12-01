@@ -78,7 +78,7 @@ function RecipeItem (item) {
         let result;
         if (this.state.resultList) {
              result = 
-             <div className="BasicList">
+             <div className="ResultList">
              {this.state.resultList.map(
                (id) => (<RecipeItem item = {id} title = {this.state.listTitle[id]}/>)
              )}

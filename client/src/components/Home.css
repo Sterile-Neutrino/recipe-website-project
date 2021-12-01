@@ -30,14 +30,15 @@
     font-size: 25px;
 }
 
-.Title {
+.ListTitle {
     z-index: 1;
-    left: -720px;
-    top: -270px;
-    position: absolute;
-    color: red;
+    left: -130%;
+    top: -200px;
+    position: relative;
+    color: lemonchiffon;
     text-decoration: none;
     font-family: 'Inter', sans-serif;
+    text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
 }
 
 .List {
