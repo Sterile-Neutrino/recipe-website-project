@@ -59,8 +59,6 @@ function RecipeItem (item) {
         .then((response) => {
             this.getTitle();
         })
-
-        this.getTitle()
     }
 
     getTitle = () => {

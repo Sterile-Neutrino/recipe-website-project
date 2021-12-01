@@ -14,19 +14,20 @@ const recipeList = ["Chicken Sandwitch", "Fried Rice", "Spaghetti with Italian M
 
 const list = [
   "61a588e7de7ab6c1924f69a1",
+  "61a5f41dbd14dc54b5f54b74",
+  "61a5f50cbd14dc54b5f54b7c",
+  "61a5f57bbd14dc54b5f54b85",
+  "61a5f730dbdd9e100a938840",
   "61a588e7de7ab6c1924f69a1",
+  "61a5f41dbd14dc54b5f54b74",
+  "61a5f50cbd14dc54b5f54b7c",
+  "61a5f57bbd14dc54b5f54b85",
+  "61a5f730dbdd9e100a938840",
   "61a588e7de7ab6c1924f69a1",
-  "61a588e7de7ab6c1924f69a1",
-  "61a588e7de7ab6c1924f69a1",
-  "61a588e7de7ab6c1924f69a1",
-  "61a588e7de7ab6c1924f69a1",
-  "61a588e7de7ab6c1924f69a1",
-  "61a588e7de7ab6c1924f69a1",
-  "61a588e7de7ab6c1924f69a1",
-  "61a588e7de7ab6c1924f69a1",
-  "61a588e7de7ab6c1924f69a1",
-  "61a588e7de7ab6c1924f69a1",
-  "61a588e7de7ab6c1924f69a1",
+  "61a5f41dbd14dc54b5f54b74",
+  "61a5f50cbd14dc54b5f54b7c",
+  "61a5f57bbd14dc54b5f54b85",
+  "61a5f730dbdd9e100a938840",
 ]
 
 
@@ -56,7 +57,8 @@ class DailyList extends React.Component {
     super(props);
     this.state = {
         // listID: [],
-        listTitle: [],
+
+        listTitle: new Object(),
         // listItem: {id: [], title: []}
 
     };
@@ -64,23 +66,22 @@ class DailyList extends React.Component {
     this.titles = [];
     this.componentDidMount = this.componentDidMount.bind(this)
 }
+
   componentDidMount () {
     const listID = list;
     for (var ID of listID) {
       axios.get(`http://localhost:4000/recipes/${ID}`)
       .then((response)=>{
-          console.log(ID);
-          this.listItem[ID] = response.data.title;
-          this.titles.push(response.data.title)
-          this.setState({listTitle: this.titles})
-          console.log(this.titles);
+          var items = this.state.listTitle
+          items[response.data._id] = response.data.title;
+          this.setState({listTitle: items})
       })
     }
 
   }
 
   render() {
-    console.log(this.titles)
+    // console.log(this.titles)
       return (
         <div>
           <h1 className="Title">
@@ -88,7 +89,7 @@ class DailyList extends React.Component {
           </h1>
               <div className="BasicList">
                 {list.map(
-                  (id) => (<RecipeItem item = {id} title = {this.state.listTitle[list.indexOf(id)]}/>)
+                  (id) => (<RecipeItem item = {id} title = {this.state.listTitle[id]}/>)
                 )}
               </div>
             </div>
