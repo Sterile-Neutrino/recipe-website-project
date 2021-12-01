@@ -12,38 +12,89 @@ import Upload from './Upload';
 
 const recipeList = ["Chicken Sandwitch", "Fried Rice", "Spaghetti with Italian Meatball"];
 
-const RecipeItem = ({ index= {} }) => (
-  <Link component={Link} to="/RecipePage" className="RecipeItem"  style = {{textDecoration: 'none' }}>
-    <h1 className="RecipeTitle"> 
-      {recipeList[index % 3]}
-    </h1>
-  </Link>
+const list = [
+  "61a588e7de7ab6c1924f69a1",
+  "61a588e7de7ab6c1924f69a1",
+  "61a588e7de7ab6c1924f69a1",
+  "61a588e7de7ab6c1924f69a1",
+  "61a588e7de7ab6c1924f69a1",
+  "61a588e7de7ab6c1924f69a1",
+  "61a588e7de7ab6c1924f69a1",
+  "61a588e7de7ab6c1924f69a1",
+  "61a588e7de7ab6c1924f69a1",
+  "61a588e7de7ab6c1924f69a1",
+  "61a588e7de7ab6c1924f69a1",
+  "61a588e7de7ab6c1924f69a1",
+  "61a588e7de7ab6c1924f69a1",
+  "61a588e7de7ab6c1924f69a1",
+]
+
+
+function RecipeItem (item) {
+    
+  const recipeID = item.item;
+  const recipeTitle = item.title;
+
   
-
-);
-
-const RecipeItem2 = ({ index, style = {} }) => (
-  <div className={"ListItemEven"} style={style}>
-    {recipeList[index % 3]}
-  </div>
-);
-
-function DailyList() {
-  const [render, setRender] = useState(true);
-
-  return (
-    <div>
-      <h1 className="Title">
-        What's popular today?
+  // console.log(item)
+  
+  return(
+      <Link to={{
+          pathname: `/RecipePage/${recipeID}`, //test for dynamic route: path id
+        }} component={recipePage} className="RecipeItem"  style = {{textDecoration: 'none' }}>
+      <h1 className="RecipeTitle"> 
+        {recipeTitle}
       </h1>
-          <div className="BasicList">
-            {render &&
-              range(50).map(item => (
-                <RecipeItem key={item} index={item}/>
-              ))}
-          </div>
-        </div>
-  );
+    </Link>
+
+  )
+};
+
+class DailyList extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+        // listID: [],
+        listTitle: [],
+        // listItem: {id: [], title: []}
+
+    };
+    this.listItem = new Object();
+    this.titles = [];
+    this.componentDidMount = this.componentDidMount.bind(this)
+}
+  componentDidMount () {
+    const listID = list;
+    for (var ID of listID) {
+      axios.get(`http://localhost:4000/recipes/${ID}`)
+      .then((response)=>{
+          console.log(ID);
+          this.listItem[ID] = response.data.title;
+          this.titles.push(response.data.title)
+          this.setState({listTitle: this.titles})
+          console.log(this.titles);
+      })
+    }
+
+  }
+
+  render() {
+    console.log(this.titles)
+      return (
+        <div>
+          <h1 className="Title">
+            What's popular today?
+          </h1>
+              <div className="BasicList">
+                {list.map(
+                  (id) => (<RecipeItem item = {id} title = {this.state.listTitle[list.indexOf(id)]}/>)
+                )}
+              </div>
+            </div>
+      );
+    }
+
 }
 
 function Mylist() {
