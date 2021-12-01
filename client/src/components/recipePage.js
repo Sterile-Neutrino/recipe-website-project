@@ -27,7 +27,7 @@ function RecipeDescription(description,ingredient) {
     return (
       <div className="descriptionBlock">
         <h1 className="ingredient_content">
-          ingredients: {ingredient} 
+          Ingredients: {ingredient} 
         </h1>
         <p className="description_content">
           {description}
@@ -75,10 +75,10 @@ class recipePage extends React.Component {
     componentDidMount = ()=>{
       const id = this.props.params.id;
       this.getRecipe(id);
-      this.getUser();
+      this.getUser(id);
     }
     
-    getUser=()=>{
+    getUser=(id)=>{
       var self=this;
       let userid=localStorage.getItem('userInfo');
       userid=JSON.parse(userid);
@@ -86,11 +86,11 @@ class recipePage extends React.Component {
       axios.get(`http://localhost:4000/users/find/${userid}`)
         .then((response)=>{
           console.log(response.data)//for debugging
-          if (response.data.likeList.includes('61a588e7de7ab6c1924f69a1')){
+          if (response.data.likeList.includes(id)){
             self.setState({liked:true});
             console.log(response.data.likeList)
           };
-          if (response.data.myList.includes('61a588e7de7ab6c1924f69a1')){
+          if (response.data.myList.includes(id)){
             self.setState({added:true});
           }
         })
@@ -119,35 +119,51 @@ class recipePage extends React.Component {
         let id = this.state.id
         let user = this.state.user
         var data={
-          userId: {user},
-          recipeId: {id}
+          userId: user,
+          recipeId: id
         };
-        axios.post(`users/like`, data);
+        axios.post(`/users/like`, data);
+        axios.post(`/recipes/like`,data)
       }
       else if (this.state.liked==true){ //click to dislike
         this.setState({liked:false});
         const likes=this.state.likes;
         this.setState({likes:likes-1});
+        let id = this.state.id
+        let user = this.state.user
+        var data={
+          userId: user,
+          recipeId: id
+        };
+        axios.post(`/users/dislike`, data);
+        axios.post(`/recipes/dislike`,data);
       }
     }
     AddtoFavorite(){
       if (this.state.added==false){ //click to add
         this.setState({added:true});
-        //let id = this.state.id
-        //let user = this.state.user
+        let id = this.state.id
+        let user = this.state.user
         var data={
-          userId: '61a588bbde7ab6c1924f6998',
-          recipeId: '61a5f57bbd14dc54b5f54b85'
+          userId: user,
+          recipeId: id
         };
-        axios.post('users/addToList',data);
+        axios.post(`/users/addToList`,data);
       }
       else if (this.state.added==true){ //click to remove from list
         this.setState({added:false});
+        let id = this.state.id
+        let user = this.state.user
+        var data={
+          userId: user,
+          recipeId: id
+        };
+        axios.post(`/users/removeFromList`,data);
       }
     }
     render() {
       let like_button_name = this.state.liked ? "LikedButton" : "LikeButton";
-      let like_button_text=this.state.liked ? "Dislike " : "Like ";
+      let like_button_text=this.state.liked ? "Liked " : "Like ";
       let add_button_name = this.state.added ? "FavoritedButton" : "FavoriteButton";
       let add_button_text=this.state.added ? "Remove from " : "Add to";
       return (
