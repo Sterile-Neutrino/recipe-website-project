@@ -350,7 +350,7 @@ router.get('/search/:input', async (req, res) => {
 })
 
 // send a list of recipe IDs sorted by likes count
-router.get('/popularList', async (req, res) => {
+router.get('/sortByLikes/list', async (req, res) => {
   var sortedRecipeIDs = [];
   var sortedRecipeArray = [];
   try {
