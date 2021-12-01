@@ -29,37 +29,6 @@ function RecipeItem (item) {
 };
 
 
-  function Advise(){
-    
-    const rand = Math.floor(Math.random() * 10);
-  
-    const one="What a happly List";
-    const two="That not what you want! Want some Fried Chiken?";
-    const three="Nice choice overall!"
-    if(rand<4){
-      var advise=one;
-    }
-    if(rand>3 && rand <7){
-      var advise=two;
-    }
-    if(rand>6){
-      var advise=three;
-    }
-    
-
-    return (
-      <div >
-        <h1 className="Advise">
-        Advise: {advise}
-      </h1>
-      </div>
-
-    )
-  }
-
-  
-
-
 
 class Mylist extends React.Component {
     constructor(props) {
@@ -140,6 +109,26 @@ class Mylist extends React.Component {
           </strong>
       }
       let count=this.state.calories;
+      let advise;
+      if (count<500){
+        advise="Trying to lose weight? Treat yourself better!"
+      }
+      if (count>499 && count<1000){
+        advise="That's not enough for a day! Want some Chicken Sandwich"
+      }
+      if (count>999 && count<1500){
+        advise="Nice choice! Are you a nutritionist?"
+      }
+      if (count>1499 && count<2000){
+        advise="emmm...less food better health"
+      }
+      if (count>1999){
+        advise="Oh My God That's too much calories"
+      }
+
+
+
+
       return (
         <div>
 
@@ -155,7 +144,8 @@ class Mylist extends React.Component {
           </div>
 
           <div className="Advise">
-            <Advise/>
+            <h1 className="Advise">
+        Advice: {advise}</h1>
           </div>
           
         </div>
