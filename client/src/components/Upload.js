@@ -33,8 +33,8 @@ function SelectionBar(props) {
 
 function UploadRecipe() {
     const [buttonSelectionBar, setButtonSelectionBar] = useState(false);
-   // const buttonSelectionBar = useState(false);
-    //const setButtonSelectionBar = useState(true);
+    //const buttonSelectionBar = useState(false);
+   // const setButtonSelectionBar = useState(true);
     function handleSubmit() {
         //check if user logged in
         //local storage 在前端 login里面set了
@@ -73,11 +73,11 @@ function UploadRecipe() {
 
     return (  
         <div className="button-container">
-        <button className="button" type="button" onClick={() => setButtonSelectionBar(true)}>
+       <button className="button" type="button" onClick={() => setButtonSelectionBar(true)}>
                 Upload
             </button>
         <SelectionBar trigger={buttonSelectionBar} setTrigger={setButtonSelectionBar} handleSubmit={handleSubmit} />
-        </div>
+       </div> 
     )
 }
 

@@ -73,7 +73,7 @@ class recipePage extends React.Component {
     }
 
     componentDidMount = ()=>{
-      const id = this.props.params.id;
+      const id = this.props.params.id;//.toString();
       this.getRecipe(id);
       this.getUser(id);
     }
@@ -109,7 +109,7 @@ class recipePage extends React.Component {
           self.setState({ingredients:response.data.ingredients})
         })
     }
-
+    
     Likeit(){
       if (this.state.liked==false){ //click to like
       
@@ -139,6 +139,8 @@ class recipePage extends React.Component {
         axios.post(`/recipes/dislike`,data);
       }
     }
+
+
     AddtoFavorite(){
       if (this.state.added==false){ //click to add
         this.setState({added:true});
@@ -161,6 +163,8 @@ class recipePage extends React.Component {
         axios.post(`/users/removeFromList`,data);
       }
     }
+
+    
     render() {
       let like_button_name = this.state.liked ? "LikedButton" : "LikeButton";
       let like_button_text=this.state.liked ? "Liked " : "Like ";

@@ -2,53 +2,32 @@ import React, {useDebugValue, useState} from 'react';
 import axios from "axios";
 import "./Mylist.css";
 import range from "lodash/range";
+import recipePage from './recipePage';
+import { useParams, useLocation } from 'react-router-dom';
 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 
-const recipeList = ["Chicken Sandwitch", "Fried Rice", "Spaghetti with Italian Meatball"];
+function RecipeItem (item) {
+    
+  const recipeID = item.item;
+  const recipeTitle = item.title;
 
-const RecipeItem = ({ index= {} }) => (
-  <Link component={Link} to="/RecipePage" className="RecipeItem"  style = {{textDecoration: 'none' }}>
-    <h1 className="RecipeTitle"> 
-      {recipeList[index % 3]}
-    </h1>
-  </Link>
   
-
-);
-function CalorieCount() {
-    var count=0
-
-    return (
-     <div >   
-          <h1 className="Calorie">Total Calories: {count} </h1>
-
-     </div>
-     
-    )
+  // console.log(item)
   
-  }
-
-  function DailyList(){
-    const [render] = useState(true);
-
-    return(
-      <div className="DailyListDisplay">
-        <h1 className="Title">
-        My List Today!
+  return(
+      <Link to={{
+          pathname: `/RecipePage/${recipeID}`, //test for dynamic route: path id
+        }} component={recipePage} className="RecipeItem"  style = {{textDecoration: 'none' }}>
+      <h1 className="RecipeTitle"> 
+        {recipeTitle}
       </h1>
+    </Link>
 
-      <div className="BasicList">
-      {render &&
-              range(3).map(item => (
-                <RecipeItem key={item} index={item}/>
-              ))}
-          </div>
-       </div>
+  )
+};
 
-    )
-  }
 
   function Advise(){
     
@@ -78,38 +57,101 @@ function CalorieCount() {
     )
   }
 
+  
+
+
+
 class Mylist extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+          myArray: [],
+          listTitle: new Object(),
+          calories:0
+        }
+        this.Ca=0;
+        this.titles = [];
+        this.listItem = new Object();
+        this.componentDidMount = this.componentDidMount.bind(this)
     }
 
-    getUser=()=>{
-      var self=this;
+    componentDidMount () {
       let userid=localStorage.getItem('userInfo');
+      userid=JSON.parse(userid);
       axios.get(`http://localhost:4000/users/find/${userid}`)
-        .then((response)=>{
-          console.log(response.data.myList)//for debugging
-          if (response.data.likeList.includes('61a588e7de7ab6c1924f69a1')){
-            self.setState({liked:true});
-          };
-          if (response.data.myList.includes('61a588e7de7ab6c1924f69a1')){
-            self.setState({added:true});
-            console.log(self.state.added);
-          }
-        })
+      .then((response)=>{
+        this.setState({myArray: response.data.myList});
+        console.log(this.state.myArray);
+
+      } )
+      .then((response)=>{    
+      this.getTitle();
+      this.getCalories();
+      })
+      
+      //this.getTitle();
     }
 
+    getCalories=()=>{
+      for (var ID of this.state.myArray) {
+        axios.get(`http://localhost:4000/recipes/${ID}`)
+        .then((response)=>{
+            //console.log(ID);
+            this.Ca=this.Ca+response.data.calories;
+            this.setState({calories: this.Ca})
+            console.log(this.state.calories);
+        })
+      }
+    }
+
+    getTitle = () => {
+      console.log(this.state.myArray)
+      for (var ID of this.state.myArray) {
+          axios.get(`http://localhost:4000/recipes/${ID}`)
+          .then((response)=>{
+            var items = this.state.listTitle
+             items[response.data._id] = response.data.title;
+             
+              
+              //this.titles.push(response.data.title)
+              this.setState({listTitle: items})
+             
+          })
+        }
+  }
+
+ 
+   
 
     render() {
+
+      let result;
+        if (this.state.myArray) {
+             result = 
+             <div className="BasicList">
+             {this.state.myArray.map(
+               (id) => (<RecipeItem item = {id} title = {this.state.listTitle[id]}/>)
+             )}
+           </div>
+        }else {
+          result = 
+          <strong>
+      "Nothing in your list"
+          </strong>
+      }
+      let count=this.state.calories;
       return (
         <div>
 
           <div className="CalorieCount">
-            <CalorieCount/>
+          <h1 className="Calorie">Total Calories: {count} </h1>
           </div>
 
           <div className="DailyList">
-            <DailyList/>
+          <h1 className="Title">
+              My List of the day
+            </h1>
+           {result}
           </div>
 
           <div className="Advise">
@@ -122,4 +164,19 @@ class Mylist extends React.Component {
 
 }
 
-export default Mylist;
+const withRouter = WrappedComponent => props => {
+  const params = useParams();
+  // etc... other react-router-dom v6 hooks
+
+  return (
+    <WrappedComponent
+      {...props}
+      params={params}
+      // etc...
+    />
+  );
+};
+
+export default withRouter(Mylist);
+
+//export default Mylist;
