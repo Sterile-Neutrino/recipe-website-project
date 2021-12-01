@@ -113,9 +113,9 @@ class recipePage extends React.Component {
     Likeit(){
       if (this.state.liked==false){ //click to like
       
+        this.setState({liked:true});
         const likes=this.state.likes;
         this.setState({ likes: likes + 1 });
-        this.setState({liked:true});
         let id = this.state.id
         let user = this.state.user
         var data={
