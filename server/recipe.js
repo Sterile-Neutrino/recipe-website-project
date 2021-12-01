@@ -349,5 +349,21 @@ router.get('/search/:input', async (req, res) => {
   }
 })
 
+// send a list of recipe IDs sorted by likes count
+router.get('/popularList', async (req, res) => {
+  var sortedRecipeIDs = [];
+  var sortedRecipeArray = [];
+  try {
+    sortedRecipeArray = await Recipe.find().sort({'likes': "desc"});
+    for (const recipe of sortedRecipeArray) {
+      sortedRecipeIDs.push(recipe._id.toString());
+    }
+    res.send(sortedRecipeIDs);
+  } catch (err) {
+    console.log(err);
+    res.send(null);
+  }
+})
+
 exports.model = Recipe;
 exports.router = router;
