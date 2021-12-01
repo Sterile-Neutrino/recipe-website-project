@@ -73,7 +73,7 @@ class recipePage extends React.Component {
     }
 
     componentDidMount = ()=>{
-      const id = this.props.params.id;
+      const id = this.props.params.id;//.toString();
       this.getRecipe(id);
       this.getUser();
     }
@@ -109,7 +109,7 @@ class recipePage extends React.Component {
           self.setState({ingredients:response.data.ingredients})
         })
     }
-
+    
     Likeit(){
       if (this.state.liked==false){ //click to like
       
