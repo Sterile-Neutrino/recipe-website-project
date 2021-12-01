@@ -78,17 +78,29 @@ function RecipeItem (item) {
     }
   
     render() {
+        let result;
+        if (this.state.resultList) {
+             result = 
+             <div className="BasicList">
+             {this.state.resultList.map(
+               (id) => (<RecipeItem item = {id} title = {this.state.listTitle[this.state.resultList.indexOf(id)]}/>)
+             )}
+           </div>
+        }
+        else {
+            result = 
+            <strong>
+        "Nothing Found!"
+            </strong>
+        }
+
         return (
           <div>
             <h1 className="Title">
               Search Results!
             </h1>
-                <div className="BasicList">
-                  {this.state.resultList.map(
-                    (id) => (<RecipeItem item = {id} title = {this.state.listTitle[this.state.resultList.indexOf(id)]}/>)
-                  )}
-                </div>
-              </div>
+            {result}
+        </div>
         );
       }
   
