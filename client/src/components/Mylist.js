@@ -97,7 +97,7 @@ class Mylist extends React.Component {
       let result;
         if (this.state.myArray) {
              result = 
-             <div className="BasicList">
+             <div className="Mylist">
              {this.state.myArray.map(
                (id) => (<RecipeItem item = {id} title = {this.state.listTitle[id]}/>)
              )}
@@ -137,7 +137,7 @@ class Mylist extends React.Component {
           </div>
 
           <div className="DailyList">
-          <h1 className="Title">
+          <h1 className="MyListTitle">
               My List of the day
             </h1>
            {result}
