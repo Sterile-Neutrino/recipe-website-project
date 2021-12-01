@@ -285,7 +285,12 @@ router.post('/dislike', async (req, res) => {
 // Return an array of words from the input string, using non-alphanumeric
 // characters as separators.
 function parse(s) {
-  return s.toString().toLowerCase().match(/[^\W_]+/g);
+  var result = [];
+  var parsed = s.toString().toLowerCase().match(/[^\W_]+/g);
+  if(parsed) {
+    result = result.concat(parsed);
+  }
+  return result;
 }
 
 // Return an array of key words of a recipe object for search.
