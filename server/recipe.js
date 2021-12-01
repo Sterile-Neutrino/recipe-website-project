@@ -103,21 +103,43 @@ router.post('/upload', aSyncUpload, async (req, res) => {
     });
   }
   // add the id of the uploaded recipe to associated user's uploaded list
-  // find by matching author, title, and calories
-  var query = { author: author, title: title, calories: calories}
+  // find by matching author, title, calories, and category
+  var query = { author: author, title: title, calories: calories, category: category}
+  // return only the objectId
   var option = { "author": 0, "title": 0, "description": 0, "calories": 0, "ingredients": 0,
                 "category": 0, "likes": 0, "imageId": 0}
+  var uploadedRecipe = null;
   try {
-    uploadedRecipeId = await Recipe.findOne(query, option);
-    
-    console.log(uploadedRecipeId)
-    await User.updateOne(
-      { _id: author },
-      { $push: { uploadList: uploadedRecipeId }}
-    )
+    uploadedRecipe = await Recipe.findOne(query, option);
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
+  if (uploadedRecipe) {
+    var uploadedRecipeId = uploadedRecipe._id.toString();
+  } else {
+    console.log ('Error: Cannot find matching recipe')
+  }
+  
+  var contributor = null;
+  var contributorId = mongoose.Types.ObjectId(author);
+  try {
+    contributor = await User.findById(contributorId);
+  } catch (err) {
+    console.log(err);
+    console.log('An error occured when searching for user')
+  }
+  if (contributor) {
+    var username = contributor.username;
+    contributor.uploadList.push(uploadedRecipeId);
+    contributor.save()
+    .then(doc => {
+      console.log('Added ' + title + 'to ' + username + '\'s uploadedList')
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+  
 });
 
 // Get an image by its objectId in databse. For example, the following url
