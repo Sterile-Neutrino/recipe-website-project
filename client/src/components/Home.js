@@ -57,7 +57,7 @@ class DailyList extends React.Component {
     super(props);
     this.state = {
         // listID: [],
-
+        listID: [],
         listTitle: new Object(),
         // listItem: {id: [], title: []}
 
@@ -67,18 +67,50 @@ class DailyList extends React.Component {
     this.componentDidMount = this.componentDidMount.bind(this)
 }
 
-  componentDidMount () {
-    const listID = list;
-    for (var ID of listID) {
-      axios.get(`http://localhost:4000/recipes/${ID}`)
-      .then((response)=>{
-          var items = this.state.listTitle
-          items[response.data._id] = response.data.title;
-          this.setState({listTitle: items})
-      })
-    }
 
+
+  componentDidMount () {
+    axios.get('http://localhost:4000/recipes/popularList')
+    .then((response)=>{
+    //   this.SearchResult = response.data;
+    console.log(response.data)
+      this.setState({listID: response.data})
+    //   console.log(this.SearchResult); //for debugging
+
+      for (var value of this.state.listID) {
+          console.log(value)
+      }
+    })
+    .then((response) => {
+        this.getTitle();
+    })
   }
+
+  getTitle = () => {
+    console.log(this.state.listID)
+    for (var ID of this.state.listID) {
+        axios.get(`http://localhost:4000/recipes/${ID}`)
+        .then((response)=>{
+            var items = this.state.listTitle
+            items[response.data._id] = response.data.title;
+            this.setState({listTitle: items})
+        })
+      }
+  }
+  // componentDidMount () {
+
+
+  //   const listID = list;
+  //   for (var ID of listID) {
+  //     axios.get(`http://localhost:4000/recipes/${ID}`)
+  //     .then((response)=>{
+  //         var items = this.state.listTitle
+  //         items[response.data._id] = response.data.title;
+  //         this.setState({listTitle: items})
+  //     })
+  //   }
+
+  // }
 
   render() {
       return (

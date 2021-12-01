@@ -358,7 +358,7 @@ router.get('/popularList', async (req, res) => {
     for (const recipe of sortedRecipeArray) {
       sortedRecipeIDs.push(recipe._id.toString());
     }
-    res.send(sortedRecipeIDs);
+    res.send(recipeArrayIDs);
   } catch (err) {
     console.log(err);
     res.send(null);

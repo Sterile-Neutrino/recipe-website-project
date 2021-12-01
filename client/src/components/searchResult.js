@@ -35,6 +35,7 @@ function RecipeItem (item) {
       super(props);
       this.state = {
           // listID: [],
+          searchWord: '',
           listTitle: new Object(),
           resultList: []
           // listItem: {id: [], title: []}
@@ -43,9 +44,9 @@ function RecipeItem (item) {
       this.listItem = new Object();
       this.titles = [];
       this.componentDidMount = this.componentDidMount.bind(this)
+      this.searchWord = this.props.params.s;
   }
     componentDidMount () {
-        this.searchWord = this.props.params.s;
         axios.get(`http://localhost:4000/recipes/search/${this.searchWord}`)
         .then((response)=>{
         //   this.SearchResult = response.data;
