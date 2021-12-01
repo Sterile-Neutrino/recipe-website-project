@@ -49,9 +49,9 @@
 .BasicList {
     box-shadow: 5px 10px 20px black;
     border-radius: 15px;
-    position: fixed;
-    left: 100px;
-    top: 250px;
+    position: absolute;
+    left: -130%;
+    top: -80%;
     height: 500px;
     width: 400px;
     overflow-y: auto;
