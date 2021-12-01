@@ -75,21 +75,7 @@ class DailyList extends React.Component {
         })
       }
   }
-  // componentDidMount () {
-
-
-  //   const listID = list;
-  //   for (var ID of listID) {
-  //     axios.get(`http://localhost:4000/recipes/${ID}`)
-  //     .then((response)=>{
-  //         var items = this.state.listTitle
-  //         items[response.data._id] = response.data.title;
-  //         this.setState({listTitle: items})
-  //     })
-  //   }
-
-  // }
-
+  
   render() {
       return (
         <div>

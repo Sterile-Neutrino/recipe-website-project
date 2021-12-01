@@ -32,9 +32,9 @@
 
 .ListTitle {
     z-index: 1;
+    position:relative;
     left: -130%;
-    top: -200px;
-    position: relative;
+    top: -190px;
     color: lemonchiffon;
     text-decoration: none;
     font-family: 'Inter', sans-serif;
@@ -207,12 +207,12 @@
     text-align: center;
 }
 .Logout button{
-    left:120px;
-    top:120px;
+    right:120px;
+    top:110px;
     position:absolute;
-    height:40px;
+    height:35px;
     width: 240px;
-    background-color:lemonchiffon;
+    background-color:rgb(255, 219, 205);
     padding: 4px 0;
     border-radius: 3px;
     font-family: 'Roboto'; 
