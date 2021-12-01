@@ -358,7 +358,7 @@ router.get('/sortByLikes/list', async (req, res) => {
     for (const recipe of sortedRecipeArray) {
       sortedRecipeIDs.push(recipe._id.toString());
     }
-    res.send(recipeArrayIDs);
+    res.send(sortedRecipeIDs);
   } catch (err) {
     console.log(err);
     res.send(null);

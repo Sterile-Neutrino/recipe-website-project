@@ -12,23 +12,7 @@ import Upload from './Upload';
 
 const recipeList = ["Chicken Sandwitch", "Fried Rice", "Spaghetti with Italian Meatball"];
 
-const list = [
-  "61a588e7de7ab6c1924f69a1",
-  "61a5f41dbd14dc54b5f54b74",
-  "61a5f50cbd14dc54b5f54b7c",
-  "61a5f57bbd14dc54b5f54b85",
-  "61a5f730dbdd9e100a938840",
-  "61a6daf4712330dac939e925",
-  "61a6daa0712330dac939e91d",
-  "61a6da1e712330dac939e904",
-  "61a6e03e9614f64f0688e387",
-  "61a6e12f9614f64f0688e391",
-  "61a6e25e9614f64f0688e3e3",
-  "61a5f41dbd14dc54b5f54b74",
-  "61a5f50cbd14dc54b5f54b7c",
-  "61a6e3479614f64f0688e42c",
-  "61a6e3f09614f64f0688e478",
-]
+
 
 
 function RecipeItem (item) {
@@ -70,7 +54,7 @@ class DailyList extends React.Component {
 
 
   componentDidMount () {
-    axios.get('http://localhost:4000/recipes/popularList')
+    axios.get('http://localhost:4000/recipes//sortByLikes/list')
     .then((response)=>{
     //   this.SearchResult = response.data;
     console.log(response.data)
@@ -119,7 +103,7 @@ class DailyList extends React.Component {
             What's popular today?
           </h1>
               <div className="BasicList">
-                {list.map(
+                {this.state.listID.map(
                   (id) => (<RecipeItem item = {id} title = {this.state.listTitle[id]}/>)
                 )}
               </div>
