@@ -70,7 +70,7 @@ const aSyncUpload = util.promisify(upload);
 router.post('/upload', aSyncUpload, async (req, res) => {
   if ((req.fileValidationError)) {
     res.append('message', req.fileValidationError);
-    res.send(false);
+    return res.send(false);
   } else {
     var author = req.body.author;
     var title = req.body.title;
@@ -285,7 +285,7 @@ router.post('/dislike', async (req, res) => {
 // Return an array of words from the input string, using non-alphanumeric
 // characters as separators.
 function parse(s) {
-  return s.toString().toLowerCase().split(/[\W_]+/);
+  return s.toString().toLowerCase().match(/[^\W_]+/g);
 }
 
 // Return an array of key words of a recipe object for search.
