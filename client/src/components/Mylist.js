@@ -66,7 +66,7 @@ class Mylist extends React.Component {
         super(props);
         this.state = {
           myArray: [],
-          listTitle: [],
+          listTitle: new Object(),
           calories:0
         }
         this.Ca=0;
@@ -109,11 +109,13 @@ class Mylist extends React.Component {
       for (var ID of this.state.myArray) {
           axios.get(`http://localhost:4000/recipes/${ID}`)
           .then((response)=>{
-              console.log(ID);
-              this.listItem[ID] = response.data.title;
-              this.titles.push(response.data.title)
-              this.setState({listTitle: this.titles})
-              console.log(this.state.listTitle);
+            var items = this.state.listTitle
+             items[response.data._id] = response.data.title;
+             
+              
+              //this.titles.push(response.data.title)
+              this.setState({listTitle: items})
+             
           })
         }
   }
@@ -128,7 +130,7 @@ class Mylist extends React.Component {
              result = 
              <div className="BasicList">
              {this.state.myArray.map(
-               (id) => (<RecipeItem item = {id} title = {this.state.listTitle[this.state.myArray.indexOf(id)]}/>)
+               (id) => (<RecipeItem item = {id} title = {this.state.listTitle[id]}/>)
              )}
            </div>
         }else {
