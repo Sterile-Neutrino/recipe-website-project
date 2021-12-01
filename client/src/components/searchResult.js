@@ -35,7 +35,7 @@ function RecipeItem (item) {
       super(props);
       this.state = {
           // listID: [],
-          listTitle: [],
+          listTitle: new Object(),
           resultList: []
           // listItem: {id: [], title: []}
   
@@ -66,11 +66,9 @@ function RecipeItem (item) {
         for (var ID of this.state.resultList) {
             axios.get(`http://localhost:4000/recipes/${ID}`)
             .then((response)=>{
-                console.log(ID);
-                this.listItem[ID] = response.data.title;
-                this.titles.push(response.data.title)
-                this.setState({listTitle: this.titles})
-                console.log(this.state.listTitle);
+                var items = this.state.listTitle
+                items[response.data._id] = response.data.title;
+                this.setState({listTitle: items})
             })
           }
     }
@@ -81,7 +79,7 @@ function RecipeItem (item) {
              result = 
              <div className="BasicList">
              {this.state.resultList.map(
-               (id) => (<RecipeItem item = {id} title = {this.state.listTitle[this.state.resultList.indexOf(id)]}/>)
+               (id) => (<RecipeItem item = {id} title = {this.state.listTitle[id]}/>)
              )}
            </div>
         }
