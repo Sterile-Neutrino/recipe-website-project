@@ -19,16 +19,17 @@ Uber Eats, star-ship, and other apps providing easily-accessed food are pushing 
 
 ### How to Run the Project Locally?
 
-- Clone the project from GitHub:
-- git clone https://github.com/Sterile-Neutrino/recipe-website-project.git
-- cd recipe-website-project/server
-- npm install
-- node index.js
+- Clone the project from GitHub by entering this command:
+- ```git clone https://github.com/Sterile-Neutrino/recipe-website-project.git```
+- Type the following commands to start backend:
+- ```cd recipe-website-project/server```
+- ```npm install```
+- ```forever -c "nodemon --exitcrash" index.js```
 - Now the backend is running at http://localhost:4000
-- Keep the backend running, and open a second terminal session
-- cd recipe-website-project/client
-- npm install
-- npm start
-- Now the web app will start on http://localhost:3000
+- Keep the backend running and open a second terminal session in the directory that ```git clone``` was called. Type the following commands to start the web app:
+- ```cd recipe-website-project/client```
+- ```npm install```
+- ```npm start```
+- Now the web app can be accessed at http://localhost:3000
 - To view the intended styling, open the web app with Google Chrome, maximized window.
 
