@@ -370,5 +370,36 @@ router.get('/sortByLikes/list', async (req, res) => {
   }
 })
 
+// Return random recipe from database
+router.get('/find/random', async (req, res) => {
+  var recipe = null;
+  emptyRecipe = new Recipe({
+    author: '',
+    title: '',
+    description: '',
+    calories: 0,
+    ingredients: '',
+    category: '',
+    imageId: '',
+    likes: 0
+  });
+  try {
+    recipes = await Recipe.aggregate([{$sample: {size: 1}}]);
+    if (recipes.length > 0) {
+      recipe = recipes[0];
+    }
+    if (recipe) {
+      console.log('Random recipe found');
+      return res.json(recipe);
+    } else {
+      console.log('Random recipe not found');
+      return res.json(emptyRecipe);
+    }
+  } catch (err) {
+    console.log('Error finding random recipe');
+    res.json(emptyRecipe);
+  }
+})
+
 exports.model = Recipe;
 exports.router = router;

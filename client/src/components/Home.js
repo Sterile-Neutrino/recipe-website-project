@@ -134,7 +134,7 @@ class Recommendation extends React.Component {
 
 componentDidMount = () => {  
   var self = this;
-  axios.get('/recipes/61a588e7de7ab6c1924f69a1')
+  axios.get('/recipes/find/random')
   .then(function (response) {
     self.setState({
       id: response.data._id,
@@ -147,7 +147,7 @@ componentDidMount = () => {
       return (
         <div>
           <Link to={{
-              pathname: `/RecipePage/61a588e7de7ab6c1924f69a1`, //test for dynamic route: path id
+              pathname: `/RecipePage/` + this.state.id, //test for dynamic route: path id
             }} component={recipePage} className="RecommendationBlock">
             <h1 className="RecommendationTitle" componentDidMount>
               {"Chef's Recommendation: " + this.state.title}
@@ -156,7 +156,7 @@ componentDidMount = () => {
               {this.state.desciption.slice(0,180) + "..."}
             </h2>
             <div className="RecommendationThumbnail">
-              <img src='http://localhost:4000/recipes/recipeImage/61a588e7de7ab6c1924f69a1' alt=""/>
+              <img src={'http://localhost:4000/recipes/recipeImage/' + this.state.id} alt=""/>
             </div>
           {/* </Link> */}
           </Link>
