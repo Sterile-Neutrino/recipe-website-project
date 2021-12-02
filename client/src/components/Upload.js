@@ -62,11 +62,16 @@ function UploadRecipe() {
           })
             .then((res) =>{
                 //handle success
+                if(res.data) {
+                    alert('Recipe uploaded!');
+                } else {
+                    alert('Failed to upload, check your input.');
+                }
                 console.log("success");
             })
-            .catch((res) => {
+            .catch((err) => {
                 //handle error
-                console.log(res);
+                console.log(err);
             });
             setButtonSelectionBar(false);
     }

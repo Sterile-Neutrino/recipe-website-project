@@ -72,13 +72,18 @@ router.post('/upload', aSyncUpload, async (req, res) => {
     res.append('message', req.fileValidationError);
     return res.send(false);
   } else {
-    var author = req.body.author;
-    var title = req.body.title;
-    var calories = req.body.calories;
-    var ingredient = req.body.ingredient;
-    var description = req.body.description;
-    var category = req.body.category;
-    var imageId = req.file.id.toString();
+    try {
+      var author = req.body.author;
+      var title = req.body.title;
+      var calories = req.body.calories;
+      var ingredient = req.body.ingredient;
+      var description = req.body.description;
+      var category = req.body.category;
+      var imageId = req.file.id.toString();
+    } catch (err) {
+      console.log('Some info is missing when uploading');
+      return res.send(false);
+    }
     const newRecipe = new Recipe({
       author: author,
       title: title,
@@ -130,19 +135,18 @@ router.post('/upload', aSyncUpload, async (req, res) => {
   }
   if (contributor) {
     var username = contributor.username;
-    contributor.uploadList.push(uploadedRecipeId);
-    contributor.save()
-    .then(doc => {
-      console.log('Added ' + title + 'to ' + username + '\'s uploadedList')
-    })
-    .catch(err => {
-      console.log(err);
-    })
+    if (uploadedRecipeId) {
+      contributor.uploadList.push(uploadedRecipeId);
+      contributor.save()
+      .then(doc => {
+        console.log('Added ' + title + 'to ' + username + '\'s uploadedList')
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    }
   }
-  
 });
-
-
 
 // Get an image by its objectId in databse. For example, the following url
 // directs to the image whose objectId is 000000000000000000000000:
