@@ -24,7 +24,7 @@ Uber Eats, star-ship, and other apps providing easily-accessed food are pushing 
 - Type the following commands to start backend:
 - ```cd recipe-website-project/server```
 - ```npm install```
-- ```forever -c "nodemon --exitcrash" index.js```
+- ```npx forever -c "nodemon --exitcrash" index.js```
 - Now the backend is running at http://localhost:4000
 - Keep the backend running and open a second terminal session in the directory that ```git clone``` was called. Type the following commands to start the web app:
 - ```cd recipe-website-project/client```
