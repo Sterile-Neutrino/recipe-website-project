@@ -116,6 +116,7 @@ function UploadRecipe() {
 function Logout() {
       localStorage.clear();
       console.log("Sign Out");
+      alert('You have logged out.')
 }
 
 class Recommendation extends React.Component {
@@ -149,7 +150,7 @@ componentDidMount = () => {
               pathname: `/RecipePage/61a588e7de7ab6c1924f69a1`, //test for dynamic route: path id
             }} component={recipePage} className="RecommendationBlock">
             <h1 className="RecommendationTitle" componentDidMount>
-              {this.state.title}
+              {"Chef's Recommendation: " + this.state.title}
             </h1>
             <h2 className="RecommendationContent">
               {this.state.desciption.slice(0,180) + "..."}
