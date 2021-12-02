@@ -142,9 +142,9 @@ router.post('/removeFromList', async (req, res) => {
 
 // Get user json by userId
 router.get('/find/:userId', async (req, res) => {
-  var userId = mongoose.Types.ObjectId(req.params.userId);
   var user = null;
   try {
+    var userId = mongoose.Types.ObjectId(req.params.userId);
     user = await User.findById(userId);
   } catch (err) {
     console.log(err);
@@ -154,7 +154,16 @@ router.get('/find/:userId', async (req, res) => {
     res.json(user);
     console.log('Found user: ' + user.username);
   } else {
-    res.json(null);
+    // Avoid frontend reading error
+    const emptyUser = new User({
+      username: '',
+      password: '',
+      email: '',
+      uploadList: [],
+      likeList: [],
+      myList: []
+    });
+    res.json(emptyUser);
     console.log('User not found');
   }
 });
