@@ -70,9 +70,16 @@ const aSyncUpload = util.promisify(upload);
 router.post('/upload', aSyncUpload, async (req, res) => {
   if ((req.fileValidationError)) {
     res.append('message', req.fileValidationError);
+    console.log('Image format invalid');
     return res.send(false);
   } else {
     try {
+      for (const prop in req.body) {
+        if (!req.body[prop]) {
+          console.log('Upload input missing');
+          return res.send(false);
+        }
+      }
       var author = req.body.author;
       var title = req.body.title;
       var calories = req.body.calories;
@@ -290,9 +297,11 @@ router.post('/dislike', async (req, res) => {
 // characters as separators.
 function parse(s) {
   var result = [];
-  var parsed = s.toString().toLowerCase().match(/[^\W_]+/g);
-  if(parsed) {
+  if(s) {
+    var parsed = s.toString().toLowerCase().match(/[^\W_]+/g);
+    if(parsed) {
     result = result.concat(parsed);
+    }
   }
   return result;
 }
