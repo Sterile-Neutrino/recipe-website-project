@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -10,8 +11,7 @@ const port = 4000;
 // To use a local mongodb
 // const url = 'mongodb://127.0.0.1:27017/recipes';
 // To use mongodb on Atlas
-const url = 'mongodb+srv://recipe:cs35lfall21@cluster0.2hwcf.mongodb.net\
-/recipe-app?retryWrites=true&w=majority';
+const url = process.env.DB_URL;
 
 // Set cors
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
